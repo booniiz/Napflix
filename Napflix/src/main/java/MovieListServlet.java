@@ -26,6 +26,7 @@ public class MovieListServlet extends HttpServlet {
         databaseAuthentication da = new databaseAuthentication();
         try{
             Connection conn = DriverManager.getConnection(da.getAddress(),da.getUsername(), da.getPassowrd());
+            //Relax MySql Standard
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT id, title, year, director, rating FROM movies INNER JOIN ratings on movies.ID = ratings.movieID ORDER BY rating DESC LIMIT 20;");
             while (resultSet.next() != false){
@@ -79,7 +80,7 @@ public class MovieListServlet extends HttpServlet {
                 out.write("</tr>");
                 for (Movie m: movieList){
                     out.write("<tr>");
-                        out.write(String.format("<th><a href = \"/Napflix_war/api/movie?movieID=%s\">%s</a></th>", m.getId(),m.getTitle()));
+                        out.write(String.format("<th><a href = \"/Napflix/api/movie?movieID=%s\">%s</a></th>", m.getId(),m.getTitle()));
                         out.write(String.format("<th>%d</th>", m.getYear()));
                         out.write(String.format("<th>%.1f</th>", m.getRating()));
                         //genres
@@ -100,7 +101,7 @@ public class MovieListServlet extends HttpServlet {
                                     for (Map.Entry<String, String> entry: m.getStarIDMap().entrySet()){
                                         String starID = entry.getKey();
                                         String starName = entry.getValue();
-                                        out.write(String.format("<th><a href = \"/Napflix_war/api/star?starID=%s\">%s</a></th>", starID, starName));
+                                        out.write(String.format("<th><a href = \"/Napflix/api/star?starID=%s\">%s</a></th>", starID, starName));
                                     }
                                 out.write("</tr> ");
                             out.write("</table>");

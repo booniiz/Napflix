@@ -33,7 +33,7 @@ public class SingleStarServlet extends HttpServlet {
                 statement.setString(1, starID);
                 try(ResultSet resultSet = statement.executeQuery()){
                     while (resultSet.next()) {
-                        out.write(String.format("<th><a href = \"/Napflix_war\">BACK TO MAIN PAGE</a></th>"));
+                        out.write(String.format("<th><a href = \"/Napflix\">BACK TO MAIN PAGE</a></th>"));
                         String[] tokens = resultSet.getString("movies").split(",");
                         out.write("<p>Name: " + resultSet.getString("s.name") + "</p>");
                         int birthYear = resultSet.getInt("s.birthYear");
@@ -48,7 +48,7 @@ public class SingleStarServlet extends HttpServlet {
                             statement2.setString(1, t);
                             ResultSet resultSet2 = statement2.executeQuery();
                             while (resultSet2.next()) {
-                                out.write(String.format("<th><a href = \"/Napflix_war/api/movie?movieID=%s\">%s</a></th>", t, resultSet2.getString("s.title")) + ", ");
+                                out.write(String.format("<th><a href = \"/Napflix/api/movie?movieID=%s\">%s</a></th>", t, resultSet2.getString("s.title")) + ", ");
                             }
                         }
                         out.write("</p>");

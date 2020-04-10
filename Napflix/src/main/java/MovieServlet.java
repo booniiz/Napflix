@@ -39,7 +39,7 @@ public class MovieServlet extends HttpServlet {
                 statement.setString(1, movieID);
                 try(ResultSet resultSet = statement.executeQuery()){
                     while (resultSet.next()) {
-                        out.write(String.format("<th><a href = \"/Napflix_war\">BACK TO MAIN PAGE</a></th>"));
+                        out.write(String.format("<th><a href = \"/Napflix\">BACK TO MAIN PAGE</a></th>"));
                         String[] tokens = resultSet.getString("stars").split(",");
                         out.write("<p>Title: " + resultSet.getString("m.title") + "</p>");
                         out.write("<p>Year: " +resultSet.getInt("m.year") + "</p>");
@@ -53,7 +53,7 @@ public class MovieServlet extends HttpServlet {
                             statement2.setString(1, t);
                             ResultSet resultSet2 = statement2.executeQuery();
                             while (resultSet2.next()) {
-                                out.write(String.format("<th><a href = \"/Napflix_war/api/star?starID=%s\">%s</a></th>", t, resultSet2.getString("s.name")) + ", ");
+                                out.write(String.format("<th><a href = \"/Napflix/api/star?starID=%s\">%s</a></th>", t, resultSet2.getString("s.name")) + ", ");
                             }
                         }
                         out.write("</p>");
