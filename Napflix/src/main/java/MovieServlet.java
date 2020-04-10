@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 
-
 @WebServlet(name = "MovieServlet", urlPatterns = "/api/movie")
 public class MovieServlet extends HttpServlet {
     @Override
@@ -23,24 +22,41 @@ public class MovieServlet extends HttpServlet {
         }
 
         String query = "SELECT m.title,m.year,m.director, " +
-                "GROUP_CONCAT(DISTINCT g.name) 'genres',GROUP_CONCAT(DISTINCT s.name) 'stars', r.rating" +
+                "GROUP_CONCAT(DISTINCT g.name) 'genres',GROUP_CONCAT(DISTINCT s.id) 'stars', r.rating" +
                 " FROM movies m INNER JOIN ratings r INNER JOIN genres_in_movies gin INNER JOIN genres g" +
                 " INNER JOIN stars_in_movies sim INNER JOIN stars s WHERE m.id = r.movieId " +
                 "AND sim.starId = s.id AND sim.movieID =m.id AND g.id = gin.genreId " +
-                "AND gin.movieId = m.id AND m.id = ?";
+                "AND gin.movieId = m.id AND m.id =?";
 
-        try(Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/122B", "root", "5B2b43d5b3?")){
+        String query2 = "SELECT s.name FROM stars s WHERE s.id = ?";
+
+        try(Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/122B?verifyServerCertificate=false&useSSL=true", "root", "5B2b43d5b3?")){
             try (PreparedStatement statement = conn.prepareStatement(query)){
                 statement.setString(1, movieID);
                 try(ResultSet resultSet = statement.executeQuery()){
                     while (resultSet.next()) {
+                        out.write(String.format("<th><a href = \"/Napflix_war\">BACK TO MAIN PAGE</a></th>"));
+                        String[] tokens = resultSet.getString("stars").split(",");
                         out.write("<p>Title: " + resultSet.getString("m.title") + "</p>");
                         out.write("<p>Year: " +resultSet.getInt("m.year") + "</p>");
                         out.write("<p>Director: " +resultSet.getString("m.director") + "</p>");
                         out.write("<p>Genres: " +resultSet.getString("genres") + "</p>");
-                        out.write("<p>Stars: " +resultSet.getString("stars") + "</p>");
+                        out.write("<p>Stars: ");
+
+                        //TOKENIZE each starID and store in array
+                        for (String t : tokens) {
+                            PreparedStatement statement2 = conn.prepareStatement(query2);
+                            statement2.setString(1, t);
+                            ResultSet resultSet2 = statement2.executeQuery();
+                            while (resultSet2.next()) {
+                                out.write(String.format("<th><a href = \"/Napflix_war/api/star?starID=%s\">%s</a></th>", t, resultSet2.getString("s.name")) + ", ");
+                            }
+                        }
+                        out.write("</p>");
                         out.write("<p>Rating: " +resultSet.getString("r.rating")+"</p>");
                     }
+                    resultSet.close();
+                    statement.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
