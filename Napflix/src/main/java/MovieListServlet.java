@@ -22,7 +22,7 @@ public class MovieListServlet extends HttpServlet {
         }
         // Mysql Connection and creating a Movie bean
         try{
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Napflix","root", "mbBMyJy6UYuQ");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/122b","root", "5B2b43d5b3?");
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT id, title, year, director, rating FROM movies INNER JOIN ratings on movies.ID = ratings.movieID ORDER BY rating DESC LIMIT 20;");
             while (resultSet.next() != false){
@@ -77,7 +77,7 @@ public class MovieListServlet extends HttpServlet {
                 for (Movie m: movieList){
                     out.write("<tr>");
                         //TODO: REPLACE THE LINK TO GOOGLE LINK TO MOVIE LINK
-                        out.write(String.format("<th><a href = \"https://www.google.com\">%s</a></th>", m.getTitle()));
+                        out.write(String.format("<th><a href = \"/Napflix_war/api/movie?movieID=%s\">%s</a></th>", m.getId(),m.getTitle()));
                         out.write(String.format("<th>%d</th>", m.getYear()));
                         out.write(String.format("<th>%.1f</th>", m.getRating()));
                         //genres
