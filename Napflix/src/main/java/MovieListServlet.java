@@ -26,7 +26,11 @@ public class MovieListServlet extends HttpServlet {
         databaseAuthentication da = new databaseAuthentication();
         try{
             Connection conn = DriverManager.getConnection(da.getAddress(),da.getUsername(), da.getPassowrd());
-            //Relax MySql Standard
+            //Relax MySql Standard(Set Mode to None)
+            Statement temp = conn.createStatement();
+            temp.executeQuery("set GLOBAL sql_mode = ''");
+            temp.close();
+            //Actual code
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT id, title, year, director, rating FROM movies INNER JOIN ratings on movies.ID = ratings.movieID ORDER BY rating DESC LIMIT 20;");
             while (resultSet.next() != false){
