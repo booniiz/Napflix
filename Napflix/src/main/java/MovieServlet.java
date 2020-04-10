@@ -1,10 +1,8 @@
-import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -12,19 +10,11 @@ import java.sql.*;
 
 @WebServlet(name = "MovieServlet", urlPatterns = "/api/movie")
 public class MovieServlet extends HttpServlet {
-    private static final long serialVersionUID = 2L;
-    @Resource(name = "jdbc:mysql://localhost:3306/122B")
-    private DataSource dataSource;
-
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     *      response)
-     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 
         String movieID = req.getParameter("movieID");
-        resp.setContentType("application/json");
+        resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -44,12 +34,12 @@ public class MovieServlet extends HttpServlet {
                 statement.setString(1, movieID);
                 try(ResultSet resultSet = statement.executeQuery()){
                     while (resultSet.next()) {
-                        out.println("Title: " + resultSet.getString("m.title") + "\n");
-                        out.println("Year: " +resultSet.getInt("m.year") + "\n");
-                        out.println("Director: " +resultSet.getString("m.director") + "\n");
-                        out.println("Genres: " +resultSet.getString("genres") + "\n");
-                        out.println("Stars: " +resultSet.getString("stars") + "\n");
-                        out.println("Rating: " +resultSet.getString("r.rating"));
+                        out.write("<p>Title: " + resultSet.getString("m.title") + "</p>");
+                        out.write("<p>Year: " +resultSet.getInt("m.year") + "</p>");
+                        out.write("<p>Director: " +resultSet.getString("m.director") + "</p>");
+                        out.write("<p>Genres: " +resultSet.getString("genres") + "</p>");
+                        out.write("<p>Stars: " +resultSet.getString("stars") + "</p>");
+                        out.write("<p>Rating: " +resultSet.getString("r.rating")+"</p>");
                     }
                 }
             } catch (SQLException e) {

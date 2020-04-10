@@ -1,10 +1,8 @@
-import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -12,19 +10,11 @@ import java.sql.*;
 
 @WebServlet(name = "StarServlet", urlPatterns = "/api/star")
 public class SingleStarServlet extends HttpServlet {
-    private static final long serialVersionUID = 2L;
-    @Resource(name = "jdbc:mysql://localhost:3306/122B")
-    private DataSource dataSource;
-
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     *      response)
-     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 
         String starID = req.getParameter("starID");
-        resp.setContentType("application/json");
+        resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();

@@ -97,7 +97,7 @@ public class MovieListServlet extends HttpServlet {
                                 out.write("<tr>");
                                     for (String star: m.getStars()){
                                         //TODO: REPLACE THE LINK TO GOOGLE LINK TO MOVIE LINK
-                                        out.write(String.format("<th><a href = \"https://www.google.com\">%s</a></th>", star));
+                                        out.write(String.format("<th><a href = \"/Napflix_war/api/star?starID=%s\">%s</a></th>", m.getId(), star));
                                     }
                                 out.write("</tr> ");
                             out.write("</table>");
