@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Map;
 
 public class Movie {
     private String id;
@@ -6,15 +7,15 @@ public class Movie {
     private int year;
     private String director;
     private float rating;
-    private List<String> stars; //actor
+    private Map<String,String> starIDMap;
     private List<String> Genres;
 
-    public List<String> getStars() {
-        return stars;
+    public Map<String, String> getStarIDMap() {
+        return starIDMap;
     }
 
-    public void setStars(List<String> stars) {
-        this.stars = stars;
+    public void setStarIDMap(Map<String, String> starIDMap) {
+        this.starIDMap = starIDMap;
     }
 
     public int getYear() {

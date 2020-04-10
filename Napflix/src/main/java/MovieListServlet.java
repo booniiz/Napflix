@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("/*")
 public class MovieListServlet extends HttpServlet {
@@ -50,12 +52,12 @@ public class MovieListServlet extends HttpServlet {
 
                 //Getting star
                 Statement statement2 = conn.createStatement();
-                ResultSet starResultSet = statement2.executeQuery("SELECT name FROM stars_in_movies INNER JOIN stars on stars_in_movies.starID = stars.ID WHERE stars_in_movies.movieID = \"" + cur.getId()  + "\"LIMIT 3;");
-                List<String> stars = new ArrayList<>();
+                ResultSet starResultSet = statement2.executeQuery("SELECT name, starID FROM stars_in_movies INNER JOIN stars on stars_in_movies.starID = stars.ID WHERE stars_in_movies.movieID = \"" + cur.getId()  + "\"LIMIT 3;");
+                Map<String,String> stars = new HashMap<>();
                 while (starResultSet.next() != false){
-                    stars.add(starResultSet.getString("name"));
+                    stars.put(starResultSet.getString("starID"), starResultSet.getString("name"));
                 }
-                cur.setStars(stars);
+                cur.setStarIDMap(stars);
                 starResultSet.close();
                 statement2.close();
 
@@ -76,7 +78,6 @@ public class MovieListServlet extends HttpServlet {
                 out.write("</tr>");
                 for (Movie m: movieList){
                     out.write("<tr>");
-                        //TODO: REPLACE THE LINK TO GOOGLE LINK TO MOVIE LINK
                         out.write(String.format("<th><a href = \"/Napflix_war/api/movie?movieID=%s\">%s</a></th>", m.getId(),m.getTitle()));
                         out.write(String.format("<th>%d</th>", m.getYear()));
                         out.write(String.format("<th>%.1f</th>", m.getRating()));
@@ -95,9 +96,10 @@ public class MovieListServlet extends HttpServlet {
                         out.write("<th>");
                             out.write("<table>");
                                 out.write("<tr>");
-                                    for (String star: m.getStars()){
-                                        //TODO: REPLACE THE LINK TO GOOGLE LINK TO MOVIE LINK
-                                        out.write(String.format("<th><a href = \"/Napflix_war/api/star?starID=%s\">%s</a></th>", m.getId(), star));
+                                    for (Map.Entry<String, String> entry: m.getStarIDMap().entrySet()){
+                                        String starID = entry.getKey();
+                                        String starName = entry.getValue();
+                                        out.write(String.format("<th><a href = \"/Napflix_war/api/star?starID=%s\">%s</a></th>", starID, starName));
                                     }
                                 out.write("</tr> ");
                             out.write("</table>");
