@@ -1,4 +1,3 @@
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,17 +9,21 @@ import java.sql.*;
 @WebServlet(name = "MovieServlet", urlPatterns = "/api/movie")
 public class MovieServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException{
 
         String movieID = req.getParameter("movieID");
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
+        /**
+         * The following code query can't run when sql_mode = only_full_group_by
+         * How to fix it?
+         * Run SET GLOBAL sql_mode = '' in console to make it relax its requirement
+         */
         String query = "SELECT m.title,m.year,m.director, " +
                 "GROUP_CONCAT(DISTINCT g.name) 'genres',GROUP_CONCAT(DISTINCT s.id) 'stars', r.rating" +
                 " FROM movies m INNER JOIN ratings r INNER JOIN genres_in_movies gin INNER JOIN genres g" +
@@ -30,7 +33,8 @@ public class MovieServlet extends HttpServlet {
 
         String query2 = "SELECT s.name FROM stars s WHERE s.id = ?";
 
-        try(Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/122B?verifyServerCertificate=false&useSSL=true", "root", "5B2b43d5b3?")){
+        databaseAuthentication da = new databaseAuthentication();
+        try(Connection conn = DriverManager.getConnection(da.getAddress(), da.getUsername(), da.getPassowrd())){
             try (PreparedStatement statement = conn.prepareStatement(query)){
                 statement.setString(1, movieID);
                 try(ResultSet resultSet = statement.executeQuery()){

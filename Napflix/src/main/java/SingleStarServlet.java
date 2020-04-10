@@ -1,4 +1,3 @@
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,14 +10,14 @@ import java.sql.*;
 @WebServlet(name = "StarServlet", urlPatterns = "/api/star")
 public class SingleStarServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException{
 
         String starID = req.getParameter("starID");
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -28,7 +27,8 @@ public class SingleStarServlet extends HttpServlet {
 
         String query2 = "SELECT s.title FROM movies s WHERE s.id = ?";
 
-        try(Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/122B", "root", "5B2b43d5b3?")){
+        databaseAuthentication da = new databaseAuthentication();
+        try(Connection conn = DriverManager.getConnection(da.getAddress(), da.getUsername(), da.getPassowrd())){
             try (PreparedStatement statement = conn.prepareStatement(query)){
                 statement.setString(1, starID);
                 try(ResultSet resultSet = statement.executeQuery()){
@@ -36,7 +36,12 @@ public class SingleStarServlet extends HttpServlet {
                         out.write(String.format("<th><a href = \"/Napflix_war\">BACK TO MAIN PAGE</a></th>"));
                         String[] tokens = resultSet.getString("movies").split(",");
                         out.write("<p>Name: " + resultSet.getString("s.name") + "</p>");
-                        out.write("<p>Year of Birth: " +resultSet.getInt("s.birthYear") + "</p>");
+                        int birthYear = resultSet.getInt("s.birthYear");
+                        if (birthYear != 0){
+                            out.write("<p>Year of Birth: " + birthYear + "</p>");
+                        }else{
+                            out.write("<p>Year of Birth: (Not Available)</p>");
+                        }
                         out.write("<p>Movies: ");
                         for (String t : tokens) {
                             PreparedStatement statement2 = conn.prepareStatement(query2);

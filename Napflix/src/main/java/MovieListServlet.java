@@ -23,8 +23,9 @@ public class MovieListServlet extends HttpServlet {
             e.printStackTrace();
         }
         // Mysql Connection and creating a Movie bean
+        databaseAuthentication da = new databaseAuthentication();
         try{
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/122b","root", "5B2b43d5b3?");
+            Connection conn = DriverManager.getConnection(da.getAddress(),da.getUsername(), da.getPassowrd());
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT id, title, year, director, rating FROM movies INNER JOIN ratings on movies.ID = ratings.movieID ORDER BY rating DESC LIMIT 20;");
             while (resultSet.next() != false){
