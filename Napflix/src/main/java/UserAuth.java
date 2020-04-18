@@ -19,8 +19,8 @@ public class UserAuth extends HttpServlet {
         databaseAuthentication da = new databaseAuthentication();
         JsonObject respJson = new JsonObject();
         try{
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
             Connection conn = DriverManager.getConnection(da.getAddress(),da.getUsername(), da.getPassowrd());
-            //Actual code
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT *\n" +
                     "FROM customers\n" +

@@ -1,6 +1,7 @@
 function handleResult(data){
     let json = JSON.parse(data);
     if (json["Login"] == "True"){
+        //After logon, we redirect
         window.location.replace('/Napflix')
     }else{
         $("#login_failed").slideDown(1000);
@@ -21,4 +22,3 @@ function makeAjax(){
 
 $("button").click(makeAjax);
 $("#login_failed").hide();
-$("#login_success").hide();
