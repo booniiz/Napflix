@@ -16,6 +16,8 @@ public class UserAuth extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
         databaseAuthentication da = new databaseAuthentication();
         JsonObject respJson = new JsonObject();
         try{
