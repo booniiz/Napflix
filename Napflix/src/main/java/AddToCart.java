@@ -16,10 +16,13 @@ public class AddToCart extends HttpServlet {
         String title = req.getParameter("title");
         String quantity = req.getParameter("quantity");
         String price = req.getParameter("price");
+        //Debug code
+        System.out.println(session.getId() + " Adding Item");
         System.out.println("movieID " + mID);
         System.out.println("title" + mID);
         System.out.println("quantity " + quantity);
         System.out.println("price" + price);
+        //End Debugcode
         Gson gson = new Gson();
         Cart cart;
         if (session.getAttribute("cart") == null){
