@@ -1,24 +1,17 @@
 public class CartItem {
     private String movieID;
-    private int quanitty ;
+    private int quantity;
     private float price = 1;
     private String title;
 
-    public CartItem(String movieID, int quanitty, float price) {
-        this.movieID = movieID;
-        this.quanitty = quanitty;
-        this.price = price;
+    public CartItem() {
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
+    public CartItem(String mID, String title, Integer quantity, Float price) {
+        this.movieID = mID;
         this.title = title;
-    }
-
-    public CartItem(String mID, String title, Integer integer, Float aFloat) {
+        this.quantity = quantity;
+        this.price = price;
     }
 
     public String getMovieID() {
@@ -29,12 +22,12 @@ public class CartItem {
         this.movieID = movieID;
     }
 
-    public int getQuanitty() {
-        return quanitty;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setQuanitty(int quanitty) {
-        this.quanitty = quanitty;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public float getPrice() {
@@ -43,5 +36,13 @@ public class CartItem {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

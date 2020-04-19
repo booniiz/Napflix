@@ -25,9 +25,11 @@ public class AddToCart extends HttpServlet {
         if (session.getAttribute("cart") == null){
             cart = new Cart();
         }else{
-            cart = gson.fromJson(req.getParameter("cart"), Cart.class);
+            cart = (Cart) session.getAttribute("cart");
         }
         cart.addItem(new CartItem(mID, title, new Integer(quantity), new Float(price)));
+        System.out.println(cart.getItems().toArray().toString());
+        session.setAttribute("cart", cart);
         System.out.println("Json for cart: " + gson.toJson(cart));
     }
 }
