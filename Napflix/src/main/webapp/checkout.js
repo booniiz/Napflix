@@ -1,4 +1,7 @@
 let json = null;
+function payment(){
+    window.location.replace("/Napflix/payment.html")
+}
 function updateTotal(){
     $.ajax({
             url: "ajax/getcart",
@@ -46,6 +49,9 @@ function handleCart(data){
             "<th>" +
             "<input name = \""+ json[i]["movieID"] +"\"type=\"number\" step=\"1\" value=\"" + json[i]["quantity"]+ "\">" +
             "</th>" +
+            "<th>" +
+            "<button type=\"button\" onclick=$(this).closest(\"th\").children(\"input\").val(0) class=\"btn btn-danger remove\">REMOVE</button>" +
+            "</th>" +
             "</tr>")
         console.log(json[i]["movieID"])
         console.log(json[i]["quantity"])
@@ -68,6 +74,11 @@ function handleCart(data){
             }
         }
     )
+    $(".remove").on('click',
+            function () {
+                $(".remove").parent().prev().children().val(0).trigger("input")
+            }
+        )
 }
 
 function doAjax(){

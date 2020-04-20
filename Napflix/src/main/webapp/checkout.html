@@ -9,7 +9,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <h1>Checkout</h1>
+    <nav class="navbar navbar-dark bg-primary">
+        <span class = navbar-brand>Cart</span>
+    </nav>
 
 
 </head>
@@ -22,14 +24,15 @@
             <tr>
                 <th scope = "col">Movie Title</th>
                 <th scope = "col">Price per unit</th>
-                <th scope = "col">Quantity(Enter 0 to remove)</th>
+                <th scope = "col">Quantity</th>
+                <th scope = "col"></th>
             </tr>
         </thead>
         <tbody id = "shoping_cart">
         </tbody>
     </table>
     <p id = "total">Your total: $</p>
-    <button type="button" class="btn btn-primary" id = "checkout">checkout</button>
+    <button type="button" class="btn btn-primary" id = "checkout" onclick = "payment()">checkout</button>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
