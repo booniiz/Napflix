@@ -33,9 +33,10 @@ public class AddToCart extends HttpServlet {
         //Check if the item is in the cart already, if yes, modify it.
         for (CartItem cartItem : cart.getItems()){
             if (cartItem.getMovieID().equals(req.getParameter("movieID"))){
-                Integer newQuantity = cartItem.getQuantity() + new Integer(req.getParameter("quantity"));
+                Integer newQuantity = new Integer(req.getParameter("quantity"));
                 if (newQuantity <= 0){
                     cart.getItems().remove(cartItem);
+                    cart.calculateTotal();
                 }else{
                     cartItem.setQuantity(newQuantity);
                 }
@@ -43,14 +44,19 @@ public class AddToCart extends HttpServlet {
             if (cart.getItems().size() == 0){
                 session.removeAttribute("cart");
             }
+            cart.calculateTotal();
+            session.setAttribute("cart", cart);
+            System.out.println(gson.toJson(cart));
             return;
         }
         //Create new item if quantity is bigger than zero
         if (new Integer(quantity) > 0){
             cart.addItem(new CartItem(mID, title, new Integer(quantity), new Float(price)));
             System.out.println(cart.getItems().toArray().toString());
-            session.setAttribute("cart", cart);
             System.out.println("Json for cart: " + gson.toJson(cart));
         }
+        cart.calculateTotal();
+        session.setAttribute("cart", cart);
+        System.out.println(gson.toJson(cart));
     }
 }

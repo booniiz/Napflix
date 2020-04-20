@@ -14,17 +14,22 @@
 
 </head>
 <body>
+    <div id = "update" class="alert alert-success" role="alert">
+        Updated!
+    </div>
     <table class = "table">
         <thead>
             <tr>
                 <th scope = "col">Movie Title</th>
                 <th scope = "col">Price per unit</th>
-                <th scope = "col">Quantity</th>
+                <th scope = "col">Quantity(Enter 0 to remove)</th>
             </tr>
         </thead>
         <tbody id = "shoping_cart">
         </tbody>
     </table>
+    <p id = "total">Your total: $</p>
+    <button type="button" class="btn btn-primary" id = "checkout">checkout</button>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
