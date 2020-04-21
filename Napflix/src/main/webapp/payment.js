@@ -1,5 +1,15 @@
 function handleResult(data){
-    alert(JSON.parse(data)["CCValid"])
+    try{
+        if (JSON.parse(data)["CCValid"] == "True"){
+            console.log("Good!")
+        }else{
+            throw "CC Not found"
+        }
+    }catch(e){
+        $("#payment_failed").slideDown(1000);
+        $("#payment_failed").slideUp(1000);
+    }
+
 }
 
 function makeAjax(){
@@ -14,4 +24,5 @@ function makeAjax(){
 
 }
 
+$("#payment_failed").hide();
 $("button").click(makeAjax);
