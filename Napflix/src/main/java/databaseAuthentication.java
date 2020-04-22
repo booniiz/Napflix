@@ -4,9 +4,9 @@ public final class databaseAuthentication {
      * Replace username with your own username
      * Replace password with your own password
      */
-    private final String address = "jdbc:mysql://localhost:3306/Napflix";
+    private final String address = "jdbc:mysql://localhost:3306/122B";
     private final String username = "root";
-    private final String passowrd = "mbBMyJy6UYuQ";
+    private final String passowrd = "5B2b43d5b3?";
 
     public String getAddress() {
         // Weird requirement by server....

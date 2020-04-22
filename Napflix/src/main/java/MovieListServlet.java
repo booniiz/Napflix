@@ -10,10 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("")
+@WebServlet("/list")
 public class MovieListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String searchID = req.getParameter("searchID");
+        System.out.println(searchID);
+
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         List<Movie> movieList = new ArrayList<>();
