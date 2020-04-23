@@ -2,7 +2,7 @@ function handleResult(data){
     let json = JSON.parse(data);
     if (json["Login"] == "True"){
         //After logon, we redirect
-        window.location.replace('/Napflix')
+        window.location.replace('/Napflix/mainmenu.html')
     }else{
         $("#login_failed").slideDown(1000);
     }

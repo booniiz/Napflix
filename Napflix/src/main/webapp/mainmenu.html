@@ -17,7 +17,10 @@
 <h1></h1>
 <form id="searchform" onsubmit="getSearch()">
     <div style="text-align:center" class="form-group">
-        <input type="text" name="searchID">
+        <input type="text" name="titleID" placeholder = "Title">
+        <input type="text" name="yearID" placeholder ="Year">
+        <input type="text" name="directorID" placeholder ="Director">
+        <input type="text" name="starID" placeholder = "Star">
         <input type="submit" value="Search">
     </div>
 </form>
@@ -52,39 +55,41 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
 <script>
-    var x = "<h3><a href = '/Napflix/list?searchID=*'>*</a></h3>", i;
+    var x = "<h3><a href = '/Napflix/list?titleID=*'>*</a></h3>", i;
     var str = "a";
     var n = str.charCodeAt(0);
     for (i = 0; i <= 9; i++) {
-        x = x + "<h3><a href = '/Napflix/list?searchID=" + i + "'>" + i;
+        x = x + "<h3><a href = '/Napflix/list?titleID=" + i + "'>" + i;
         +"</a></h3>";
     }
     for (i = 0; i <= 25; i++) {
-        x = x + "<h3><a href = '/Napflix/list?searchID=" + String.fromCharCode(65 + i) + "'>" + String.fromCharCode(65 + i);
+        x = x + "<h3><a href = '/Napflix/list?titleID=" + String.fromCharCode(65 + i) + "'>" + String.fromCharCode(65 + i);
         +"</a></h3>";
     }
     document.getElementById("looptitles").innerHTML = x;
 </script>
 <script>
     function getSearch() {
-        var action_src = "/Napflix/list?" + document.getElementsByName("searchID")[0].value;
+        var action_src = "/Napflix/list?" + document.getElementsByName("titleID")[0].value
+            + document.getElementsByName("yearID")[0].value
+            + document.getElementsByName("directorID")[0].value
+            + document.getElementsByName("starID")[0].value;
         var your_form = document.getElementById('searchform');
         your_form.action = action_src;
     }
 </script>
 <script>
-    function success(data){
-
-        log.console(Accel_X)
-            //<h3><a href="/Napflix/list?searchID=Action">Action</a></h3>
-        document.getElementById("genre").innerHTML = data;
-    }
     $.ajax({
         dataType: "json",
         method: "GET",
         url: "ajax/main",
-        success: success,
-
+        success: function(data){
+            var x = "";
+            for (i = 0; i < data.length; i++) {
+                x = x + "<h3><a href = '/Napflix/list?genreID=" +data[i] + "'>" +data[i]+"</a></h3>";
+            }
+            document.getElementById("genre").innerHTML = x;
+        },
     });
 </script>
 
