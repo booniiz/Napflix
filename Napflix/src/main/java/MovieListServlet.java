@@ -14,8 +14,45 @@ import java.util.Map;
 public class MovieListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String searchID = req.getParameter("searchID");
-        System.out.println(searchID);
+        String title, year,director,star,genre;
+        //CHECK EDGE CASE FOR SEARCH
+        if(req.getParameter("titleID") == null || req.getParameter("titleID") == "" ){
+            title ="";
+        }
+        else if( req.getParameter("titleID").compareTo("*") == 0){
+             title = "not like 'A_Z' ";
+        }
+        else{
+            title = " AND m.title like '" + req.getParameter("titleID") + "%' ";
+        }
+
+        if(req.getParameter("yearID") == null  ||req.getParameter("yearID").compareTo("") == 0){
+            year ="";
+        }
+        else{
+            year = " AND m.year = '" + req.getParameter("yearID") + "' ";
+        }
+
+        if(req.getParameter("directorID") == null || req.getParameter("directorID").compareTo("") == 0){
+            director ="";
+        }
+        else{
+            director = " AND m.director like '" + req.getParameter("directorID") + "%' ";
+        }
+
+        if( req.getParameter("starID") == null  ||req.getParameter("starID").compareTo("") == 0){
+            star ="";
+        }
+        else{
+            star = " AND s.name like '" + req.getParameter("starID") + "%' ";
+        }
+
+        if(req.getParameter("genreID") == null ){
+            genre ="";
+        }
+        else{
+            genre = " AND g.name ='" + req.getParameter("genreID") + "' ";
+        }
 
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
@@ -34,15 +71,20 @@ public class MovieListServlet extends HttpServlet {
             temp.executeQuery("set GLOBAL sql_mode = ''");
             temp.close();
             //Actual code
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT id, title, year, director, rating FROM movies INNER JOIN ratings on movies.ID = ratings.movieID ORDER BY rating DESC LIMIT 20;");
+            String queryTitle = "SELECT m.id, m.title,m.year,m.director,r.rating,group_concat(DISTINCT g.name separator ',') 'genre',group_concat(DISTINCT s.name separator ',') 'star'" +
+                    "FROM movies m JOIN ratings r JOIN genres g JOIN genres_in_movies gim JOIN stars_in_movies sim JOIN stars s WHERE m.id = r.movieId AND sim.starId = s.id AND sim.movieID =m.id AND m.ID = gim.movieID AND gim.genreID = g.ID "
+                    + title+year+director+star+genre+  "group by m.title LIMIT 30";
+            PreparedStatement statement = conn.prepareStatement(queryTitle);
+
+
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next() != false){
                 Movie cur = new Movie();
-                cur.setId(resultSet.getString("id"));
-                cur.setTitle(resultSet.getString("title"));
-                cur.setYear(resultSet.getInt("year"));
-                cur.setDirector(resultSet.getString("director"));
-                cur.setRating(resultSet.getFloat("rating"));
+                cur.setId(resultSet.getString("m.id"));
+                cur.setTitle(resultSet.getString("m.title"));
+                cur.setYear(resultSet.getInt("m.year"));
+                cur.setDirector(resultSet.getString("m.director"));
+                cur.setRating(resultSet.getFloat("r.rating"));
 
                 //Getting genre
                 Statement statement1 = conn.createStatement();
@@ -50,7 +92,7 @@ public class MovieListServlet extends HttpServlet {
                         "FROM genres_in_movies\n" +
                         "INNER JOIN genres on genres_in_movies.genreID = genres.ID\n" +
                         "WHERE genres_in_movies.movieID = \""+cur.getId()+"\"\n" +
-                        "LIMIT 3;");
+                        "ORDER BY name ASC LIMIT 3;");
                 List<String> genres = new ArrayList<>();
                 while (genresResultSet.next() != false){
                     genres.add(genresResultSet.getString("name"));
@@ -77,6 +119,8 @@ public class MovieListServlet extends HttpServlet {
             statement.close();
             conn.close();
             // Creating HTML
+            out.write(String.format("<th><a href = \"/Napflix/mainmenu.html\">BACK TO MAIN PAGE</a></th>"));
+            out.write("<p></p>");
             out.write("<table>");
                 out.write("<tr>");
                     out.write("<th>Title</th>");
@@ -94,8 +138,8 @@ public class MovieListServlet extends HttpServlet {
                         out.write("<th>");
                             out.write("<table>");
                                 out.write("<tr>");
-                                        for (String genre: m.getGenres()){
-                                            out.write(String.format("<th>%s</th>", genre));
+                                        for (String genrelist: m.getGenres()){
+                                            out.write(String.format("<th><a href = '/Napflix/list?genreID=" +genrelist + "'>" +genrelist+"</a></th>"));
                                         }
                                 out.write("</tr> ");
                             out.write("</table>");

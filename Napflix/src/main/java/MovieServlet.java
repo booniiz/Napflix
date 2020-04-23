@@ -39,15 +39,20 @@ public class MovieServlet extends HttpServlet {
                 statement.setString(1, movieID);
                 try(ResultSet resultSet = statement.executeQuery()){
                     while (resultSet.next()) {
-                        out.write(String.format("<th><a href = \"/Napflix\">BACK TO MAIN PAGE</a></th>"));
+                        out.write(String.format("<th><a href = \"/Napflix/mainmenu.html\">BACK TO MAIN PAGE</a></th>"));
                         String[] tokens = resultSet.getString("stars").split(",");
+                        String[] token1 = resultSet.getString("genres").split(",");
                         out.write("<p>Title: " + resultSet.getString("m.title") + "</p>");
                         out.write("<p>Year: " +resultSet.getInt("m.year") + "</p>");
                         out.write("<p>Director: " +resultSet.getString("m.director") + "</p>");
-                        out.write("<p>Genres: " +resultSet.getString("genres") + "</p>");
+                        out.write("<p>Genres: ");
+                        for (String t1 : token1) {
+                            out.write(String.format("<th><a href = \"/Napflix/list?genreID=%s\">%s</a></th>", t1, t1) + ", ");
+                        }
+                        out.write("</p>");
                         out.write("<p>Stars: ");
 
-                        //TOKENIZE each starID and store in array
+                        //TOKENIZE each starID and store in an array
                         for (String t : tokens) {
                             PreparedStatement statement2 = conn.prepareStatement(query2);
                             statement2.setString(1, t);

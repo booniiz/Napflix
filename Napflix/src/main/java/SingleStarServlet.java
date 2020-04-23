@@ -33,7 +33,7 @@ public class SingleStarServlet extends HttpServlet {
                 statement.setString(1, starID);
                 try(ResultSet resultSet = statement.executeQuery()){
                     while (resultSet.next()) {
-                        out.write(String.format("<th><a href = \"/Napflix\">BACK TO MAIN PAGE</a></th>"));
+                        out.write(String.format("<th><a href = \"/Napflix/mainmenu.html\">BACK TO MAIN PAGE</a></th>"));
                         String[] tokens = resultSet.getString("movies").split(",");
                         out.write("<p>Name: " + resultSet.getString("s.name") + "</p>");
                         int birthYear = resultSet.getInt("s.birthYear");
