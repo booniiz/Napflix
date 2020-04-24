@@ -5,10 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @WebServlet("/list")
 public class MovieListServlet extends HttpServlet {
@@ -103,8 +100,10 @@ public class MovieListServlet extends HttpServlet {
 
                 //Getting star
                 Statement statement2 = conn.createStatement();
-                ResultSet starResultSet = statement2.executeQuery("SELECT name, starID FROM stars_in_movies INNER JOIN stars on stars_in_movies.starID = stars.ID WHERE stars_in_movies.movieID = \"" + cur.getId()  + "\"LIMIT 3;");
-                Map<String,String> stars = new HashMap<>();
+                ResultSet starResultSet = statement2.executeQuery("SELECT moviedata.name,sim.starID,count(*) FROM 	(SELECT name, starID FROM stars_in_movies INNER JOIN stars on stars_in_movies.starID = stars.ID WHERE stars_in_movies.movieID = \"" + cur.getId()  + "\") AS moviedata JOIN stars_in_movies sim WHERE sim.starID = moviedata.starID GROUP BY starID ORDER BY COUNT(*) DESC, moviedata.name ASC LIMIT 3;");
+
+
+                Map<String,String> stars = new LinkedHashMap<>();
                 while (starResultSet.next() != false){
                     stars.put(starResultSet.getString("starID"), starResultSet.getString("name"));
                 }

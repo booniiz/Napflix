@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @WebServlet(name = "MovieServlet", urlPatterns = "/api/movie")
 public class MovieServlet extends HttpServlet {
@@ -31,7 +33,7 @@ public class MovieServlet extends HttpServlet {
                 "AND sim.starId = s.id AND sim.movieID =m.id AND g.id = gin.genreId " +
                 "AND gin.movieId = m.id AND m.id =?";
 
-        String query2 = "SELECT s.name FROM stars s WHERE s.id = ?";
+        String query2 = "SELECT moviedata.name,sim.starID,count(*) FROM 	(SELECT name, starID FROM stars_in_movies INNER JOIN stars on stars_in_movies.starID = stars.ID WHERE stars_in_movies.movieID = \"" + movieID + "\") AS moviedata JOIN stars_in_movies sim WHERE sim.starID = moviedata.starID GROUP BY starID ORDER BY COUNT(*) DESC, moviedata.name ASC LIMIT 3";
 
         databaseAuthentication da = new databaseAuthentication();
         try(Connection conn = DriverManager.getConnection(da.getAddress(), da.getUsername(), da.getPassowrd())){
@@ -47,19 +49,23 @@ public class MovieServlet extends HttpServlet {
                         out.write("<p>Director: " +resultSet.getString("m.director") + "</p>");
                         out.write("<p>Genres: ");
                         for (String t1 : token1) {
-                            out.write(String.format("<th><a href = \"/Napflix/list?genreID=%s\">%s</a></th>", t1, t1) + ", ");
+                            out.write(String.format("<th><a href = \"/Napflix/list?genreID=%s\">%s</a></th>", t1, t1) + " ");
                         }
                         out.write("</p>");
                         out.write("<p>Stars: ");
-
+                        PreparedStatement statement2 = conn.prepareStatement(query2);
+                        ResultSet resultSet2 = statement2.executeQuery();
                         //TOKENIZE each starID and store in an array
-                        for (String t : tokens) {
-                            PreparedStatement statement2 = conn.prepareStatement(query2);
-                            statement2.setString(1, t);
-                            ResultSet resultSet2 = statement2.executeQuery();
-                            while (resultSet2.next()) {
-                                out.write(String.format("<th><a href = \"/Napflix/api/star?starID=%s\">%s</a></th>", t, resultSet2.getString("s.name")) + ", ");
-                            }
+                        Map<String,String> stars = new LinkedHashMap<>();
+                        while (resultSet2.next() != false){
+                            stars.put(resultSet2.getString("starID"), resultSet2.getString("name"));
+                        }
+                        Movie cur = new Movie();
+                        cur.setStarIDMap(stars);
+                        for (Map.Entry<String, String> entry: cur.getStarIDMap().entrySet()){
+                            String starID = entry.getKey();
+                            String starName = entry.getValue();
+                            out.write(String.format("<th><a href = \"/Napflix/api/star?starID=%s\">%s</a></th>", starID, starName)+ " ");
                         }
                         out.write("</p>");
                         out.write("<p>Rating: " +resultSet.getString("r.rating")+"</p>");
