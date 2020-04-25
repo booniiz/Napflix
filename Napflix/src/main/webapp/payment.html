@@ -9,25 +9,39 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <nav class="navbar navbar-dark bg-primary">
-        <span class = navbar-brand>Login</span>
-    </nav>
 
 </head>
 <body>
-<div id = "login_failed" class="alert alert-danger" role="alert">
-    Wrong username and/or password.
+<nav class="navbar navbar-dark bg-primary">
+    <span class = navbar-brand>Payment</span>
+    <ul class="navbar-nav">
+        <li class = "navbar-item">
+            <a class = "nav-link" href = "Napflix/checkout.html">My carts(Checkout)</a>
+        </li>
+    </ul>
+</nav>
+<div id = "payment_failed" class="alert alert-danger" role="alert">
+    Payment Failed. Please try again.
 </div>
-<form name = "loginform" action="#" method="POST">
+<form id = "paymentform" action="#" method="POST">
     <div class = "form-group">
-        <label>Username</label>
-        <input type = "text" class = "form-control" id = "username" name = "username">
+        <label>First Name</label>
+        <input type = "text" class = "form-control" id = "first_name" name = "first_name">
     </div>
     <div class = "form-group">
-        <label>Password</label>
-        <input type = "password" class = "form-control" id = "password" name = "password">
+        <label>Last Name</label>
+        <input type = "text" class = "form-control" id = "last_name" name = "last_name">
     </div>
-    <button type="button" class="btn btn-primary" id = "Signin_button">Signin</button>
+    <div class = "form-group">
+        <label>Credit Card Number</label>
+        <input type = "text" class = "form-control" id = "cc" name = "cc">
+    </div>
+    <div class = "form-group">
+        <label>Expiration Date(YYYY-MM-DD)</label>
+        <input type = "text" class = "form-control" id = "expiration" name = "expiration">
+    </div>
+    <p id = "Cost: "></p>
+    <button type="button" class="btn btn-primary" id = "Signin_button">Place orders</button>
 </form>
 
 <!-- Optional JavaScript -->
@@ -35,31 +49,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<script>function handleResult(data){
-    let json = JSON.parse(data);
-    if (json["Login"] == "True"){
-        //After logon, we redirect
-        window.location.replace('/Napflix/mainmenu.html')
-    }else{
-        $("#login_failed").slideDown(1000);
-    }
-}
-
-function makeAjax(){
-    $.ajax({
-            url: "ajax/login",
-            type: "POST",
-            data: {username:$("#username").val(), password:$("#password").val()},
-            success: handleResult,
-            dataType: 'Text'
-        }
-    );
-
-}
-
-$("button").click(makeAjax);
-$("#login_failed").hide();
-</script>
+<script src="payment.js"></script>
 
 </body>
 </html>

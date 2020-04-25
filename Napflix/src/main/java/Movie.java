@@ -10,6 +10,19 @@ public class Movie {
     private Map<String,String> starIDMap;
     private List<String> Genres;
 
+    public Movie() {
+    }
+
+    public Movie(String id, String title, int year, String director, float rating, Map<String, String> starIDMap, List<String> genres) {
+        this.id = id;
+        this.title = title;
+        this.year = year;
+        this.director = director;
+        this.rating = rating;
+        this.starIDMap = starIDMap;
+        Genres = genres;
+    }
+
     public Map<String, String> getStarIDMap() {
         return starIDMap;
     }
