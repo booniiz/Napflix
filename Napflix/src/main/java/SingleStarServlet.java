@@ -14,7 +14,15 @@ public class SingleStarServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException{
 
-        String starID = req.getParameter("starID");
+        String titlep = req.getParameter("titleID");
+        String yearp = req.getParameter("yearID");
+        String directorp = req.getParameter("directorID");
+        String starp = req.getParameter("starID");
+        String genrep = req.getParameter("genreID");
+        String sortp = req.getParameter("sort");
+        String pagep = req.getParameter("page");
+        String limitp = req.getParameter("limit");
+        String starID = req.getParameter("starnumID");
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         try {
@@ -35,7 +43,8 @@ public class SingleStarServlet extends HttpServlet {
                 statement.setString(1, starID);
                 try(ResultSet resultSet = statement.executeQuery()){
                     while (resultSet.next()) {
-                        out.write(String.format("<th><a href = \"/Napflix/mainmenu.html\">BACK TO MAIN PAGE</a></th>"));
+                        out.write(String.format("<th><a href = \"/Napflix/list?titleID=%s&yearID=%s&directorID=%s&starID=%s&genreID=%s&sort=%s&page=%s&limit=%s\">BACK TO MOVIE LIST</a></th>"
+                                ,titlep,yearp,directorp,starp,genrep,sortp,pagep,limitp));
 
                         out.write("<p>Name: " + resultSet.getString("s.name") + "</p>");
                         int birthYear = resultSet.getInt("s.birthYear");
@@ -68,7 +77,8 @@ public class SingleStarServlet extends HttpServlet {
                         for (Map.Entry<String, String> entry: movies.entrySet()){
                             String name = entry.getKey();
                             String id = entry.getValue();
-                            out.write(String.format("<th><a href = \"/Napflix/api/movie?movieID=%s\">%s</a></th>", id, name) + " ");
+                            out.write(String.format("<th><a href = \"/Napflix/api/movie?movieID=%s&titleID=%s&yearID=%s&directorID=%s&starID=%s&genreID=%s&sort=%s&page=%s&limit=%s\">%s</a></th>",
+                                    id,titlep,yearp,directorp,starp,genrep,sortp,pagep,limitp,name));
                         }
                         out.write("</p>");
                     }

@@ -14,6 +14,14 @@ public class MovieServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException{
 
         String movieID = req.getParameter("movieID");
+        String titlep = req.getParameter("titleID");
+        String yearp = req.getParameter("yearID");
+        String directorp = req.getParameter("directorID");
+        String starp = req.getParameter("starID");
+        String genrep = req.getParameter("genreID");
+        String sortp = req.getParameter("sort");
+        String pagep = req.getParameter("page");
+        String limitp = req.getParameter("limit");
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         try {
@@ -33,7 +41,7 @@ public class MovieServlet extends HttpServlet {
                 "AND sim.starId = s.id AND sim.movieID =m.id AND g.id = gin.genreId " +
                 "AND gin.movieId = m.id AND m.id =?";
 
-        String query2 = "SELECT moviedata.name,sim.starID,count(*) FROM 	(SELECT name, starID FROM stars_in_movies INNER JOIN stars on stars_in_movies.starID = stars.ID WHERE stars_in_movies.movieID = \"" + movieID + "\") AS moviedata JOIN stars_in_movies sim WHERE sim.starID = moviedata.starID GROUP BY starID ORDER BY COUNT(*) DESC, moviedata.name ASC LIMIT 3";
+        String query2 = "SELECT moviedata.name,sim.starID,count(*) FROM (SELECT name, starID FROM stars_in_movies INNER JOIN stars on stars_in_movies.starID = stars.ID WHERE stars_in_movies.movieID = \"" + movieID + "\") AS moviedata JOIN stars_in_movies sim WHERE sim.starID = moviedata.starID GROUP BY starID ORDER BY COUNT(*) DESC, moviedata.name ASC LIMIT 3";
 
         databaseAuthentication da = new databaseAuthentication();
         try(Connection conn = DriverManager.getConnection(da.getAddress(), da.getUsername(), da.getPassowrd())){
@@ -41,7 +49,8 @@ public class MovieServlet extends HttpServlet {
                 statement.setString(1, movieID);
                 try(ResultSet resultSet = statement.executeQuery()){
                     while (resultSet.next()) {
-                        out.write(String.format("<th><a href = \"/Napflix/mainmenu.html\">BACK TO MAIN PAGE</a></th>"));
+                        out.write(String.format("<th><a href = \"/Napflix/list?titleID=%s&yearID=%s&directorID=%s&starID=%s&genreID=%s&sort=%s&page=%s&limit=%s\">BACK TO MOVIE LIST</a></th>"
+                                ,titlep,yearp,directorp,starp,genrep,sortp,pagep,limitp));
                         String[] tokens = resultSet.getString("stars").split(",");
                         String[] token1 = resultSet.getString("genres").split(",");
                         out.write("<p>Title: " + resultSet.getString("m.title") + "</p>");
@@ -49,7 +58,7 @@ public class MovieServlet extends HttpServlet {
                         out.write("<p>Director: " +resultSet.getString("m.director") + "</p>");
                         out.write("<p>Genres: ");
                         for (String t1 : token1) {
-                            out.write(String.format("<th><a href = \"/Napflix/list?genreID=%s\">%s</a></th>", t1, t1) + " ");
+                            out.write(String.format("<th><a href = \"/Napflix/list?genreID=%s&sort=%s&page=%d&limit=%s\">%s</a></th>", t1,sortp,1,limitp, t1) + " ");
                         }
                         out.write("</p>");
                         out.write("<p>Stars: ");
@@ -65,7 +74,8 @@ public class MovieServlet extends HttpServlet {
                         for (Map.Entry<String, String> entry: cur.getStarIDMap().entrySet()){
                             String starID = entry.getKey();
                             String starName = entry.getValue();
-                            out.write(String.format("<th><a href = \"/Napflix/api/star?starID=%s\">%s</a></th>", starID, starName)+ " ");
+                            out.write(String.format("<th><a href = \"/Napflix/api/star?starnumID=%s&titleID=%s&yearID=%s&directorID=%s&starID=%s&genreID=%s&sort=%s&page=%s&limit=%s\">%s</a></th>"
+                                    ,starID, titlep,yearp,directorp,starp,genrep,sortp,pagep,limitp, starName)+ " ");
                         }
                         out.write("</p>");
                         out.write("<p>Rating: " +resultSet.getString("r.rating")+"</p>");
