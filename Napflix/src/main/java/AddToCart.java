@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = "/ajax/addtocart")
@@ -16,12 +17,14 @@ public class AddToCart extends HttpServlet {
         String title = req.getParameter("title");
         String quantity = req.getParameter("quantity");
         String price = req.getParameter("price");
+        Boolean change_mode = Boolean.valueOf(req.getParameter("change_mode"));
         //Debug code
         System.out.println(session.getId() + " Adding Item");
         System.out.println("movieID " + mID);
         System.out.println("title" + mID);
         System.out.println("quantity " + quantity);
         System.out.println("price" + price);
+        System.out.println("change_mode" + change_mode);
         //End Debugcode
         Gson gson = new Gson();
         Cart cart;
@@ -30,24 +33,29 @@ public class AddToCart extends HttpServlet {
         }else{
             cart = (Cart) session.getAttribute("cart");
         }
-        //Check if the item is in the cart already, if yes, modify it.
+
         for (CartItem cartItem : cart.getItems()){
             if (cartItem.getMovieID().equals(req.getParameter("movieID"))){
-                Integer newQuantity = new Integer(req.getParameter("quantity"));
+                Integer newQuantity;
+                if (change_mode){
+                    newQuantity = new Integer(req.getParameter("quantity"));
+                }else{
+                    newQuantity = cartItem.getQuantity() + new Integer(req.getParameter("quantity"));
+                }
                 if (newQuantity <= 0){
                     cart.getItems().remove(cartItem);
                     cart.calculateTotal();
                 }else{
                     cartItem.setQuantity(newQuantity);
                 }
+                cart.calculateTotal();
+                session.setAttribute("cart", cart);
+                System.out.println(gson.toJson(cart));
+                return;
             }
             if (cart.getItems().size() == 0){
                 session.removeAttribute("cart");
             }
-            cart.calculateTotal();
-            session.setAttribute("cart", cart);
-            System.out.println(gson.toJson(cart));
-            return;
         }
         //Create new item if quantity is bigger than zero
         if (new Integer(quantity) > 0){

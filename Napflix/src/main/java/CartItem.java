@@ -3,6 +3,11 @@ public class CartItem {
     private int quantity;
     private float price = 1;
     private String title;
+    private int saleID;
+
+    public void setSaleID(int saleID) {
+        this.saleID = saleID;
+    }
 
     public CartItem() {
     }

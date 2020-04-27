@@ -25,7 +25,7 @@ function update($this){
         {
             url:"ajax/addtocart",
             type:"POST",
-            data: {movieID:movieID, quantity:quantity, price:1, title:""},
+            data: {movieID:movieID, quantity:quantity, price:1, title:"", change_mode:true},
             success: updateTotal
         }
         )
@@ -50,7 +50,7 @@ function handleCart(data){
             "<input name = \""+ json[i]["movieID"] +"\"type=\"number\" step=\"1\" value=\"" + json[i]["quantity"]+ "\">" +
             "</th>" +
             "<th>" +
-            "<button type=\"button\" onclick=$(this).closest(\"th\").children(\"input\").val(0) class=\"btn btn-danger remove\">REMOVE</button>" +
+            "<button type=\"button\" class=\"btn btn-danger remove\">REMOVE</button>" +
             "</th>" +
             "</tr>")
         console.log(json[i]["movieID"])
@@ -76,7 +76,7 @@ function handleCart(data){
     )
     $(".remove").on('click',
             function () {
-                $(".remove").parent().prev().children().val(0).trigger("input")
+                $(this).parent().prev().children().val(0).trigger("input");
             }
         )
 }

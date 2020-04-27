@@ -90,6 +90,27 @@ public class MovieListServlet extends HttpServlet {
         }
         // Mysql Connection and creating a Movie bean
         databaseAuthentication da = new databaseAuthentication();
+        out.write("<head>\n" +
+                "    <!-- Required meta tags -->\n" +
+                "    <meta charset=\"utf-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n" +
+                "\n" +
+                "    <!-- Bootstrap CSS -->\n" +
+                "    <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css\" integrity=\"sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh\" crossorigin=\"anonymous\">\n" +
+                "\n" +
+                "\n" +
+                "</head>");
+        out.write("<nav class=\"navbar navbar-expand-lg navbar-light bg-primary\">" +
+                "    <span class = \"navbar-brand text-white\">Movie List</span>\n" +
+                "    <ul class=\"navbar-nav ml-auto\">\n" +
+                "        <li class = \"navbar-item \">\n" +
+                "            <a class = \"nav-link text-white\" href = \"/Napflix/mainmenu.html\">Back to Main Menu</a>\n" +
+                "        </li>\n" +
+                "        <li class = \"navbar-item\">\n" +
+                "            <a class = \"nav-link text-white\" href = \"/Napflix/checkout.html\">My carts(Checkout)</a>\n" +
+                "        </li>\n" +
+                "    </ul>\n" +
+                "</nav>");
         try{
             Connection conn = DriverManager.getConnection(da.getAddress(),da.getUsername(), da.getPassowrd());
             //Relax MySql Standard(Set Mode to None)
@@ -154,10 +175,13 @@ public class MovieListServlet extends HttpServlet {
             statement.close();
             conn.close();
             // Creating HTML
-
-            out.write(String.format("<th><a href = \"/Napflix/mainmenu.html\">BACK TO MAIN PAGE</a></th>"));
-            out.write("<p></p>");
-            out.write("<table>");
+            out.write("<div id = \"add\" class=\"alert alert-success\" role=\"alert\">\n" +
+                    "        Added to cart. To remove, please go to cart.\n" +
+                    "    </div>");
+            out.write("<div id = \"add_error\" class=\"alert alert-danger\" role=\"alert\">\n" +
+                    "        ERROR!!! \n" +
+                    "    </div>");
+            out.write("<table class = \"table\">");
             out.write("<span>   </span>");
             out.write("<span>   </span>");
             out.write("<label  for=\"sortie\">Sort: </label>");
@@ -180,6 +204,7 @@ public class MovieListServlet extends HttpServlet {
                     out.write("<th>Rating</th>");
                     out.write("<th>Genres</th>");
                     out.write("<th>Star</th>");
+                    out.write("<th>add_to_cart</th>");
                 out.write("</tr>");
                 int size=movieList.size();
                 if(size>1){
@@ -218,6 +243,9 @@ public class MovieListServlet extends HttpServlet {
                                 out.write("</tr> ");
                             out.write("</table>");
                         out.write("</th>");
+                        out.write("<th>");
+                            out.write("<button type=\"button\" class=\"btn btn-primary add_to_cart\" movieID =\""+ m.getId() +"\" title = \"" + m.getTitle() + "\">Add to cart</button>");
+                        out.write("</th>");
                     out.write("</tr>");
 
                 }
@@ -227,7 +255,7 @@ public class MovieListServlet extends HttpServlet {
             out.write(String.format("<span>   </span>"));
             out.write(String.format("<span>   </span>"));
             if(page !=1){
-                out.write(String.format("<th><button onclick =\"window.location.href ='/Napflix/list?titleID=%s&yearID=%s&directorID=%s&starID=%s&genreID=%s&sort=%s&page=%d&limit=%s'\">Prev</button></th>",
+                out.write(String.format("<th><button class=\"btn btn-primary\" onclick =\"window.location.href ='/Napflix/list?titleID=%s&yearID=%s&directorID=%s&starID=%s&genreID=%s&sort=%s&page=%d&limit=%s'\">Prev</button></th>",
                         titlep ,yearp,directorp,starp, genrep, req.getParameter("sort"),page-1,req.getParameter("limit")));
             }
             else{
@@ -239,7 +267,7 @@ public class MovieListServlet extends HttpServlet {
             out.write(String.format("<span>   </span>"));
             out.write(String.format("<span>   </span>"));
             if(rowcount >Integer.parseInt(req.getParameter("limit")) ) {
-                out.write(String.format("<th><button onclick =\"window.location.href ='/Napflix/list?titleID=%s&yearID=%s&directorID=%s&starID=%s&genreID=%s&sort=%s&page=%d&limit=%s'\">Next</button></th>",
+                out.write(String.format("<th><button class=\"btn btn-primary\" onclick =\"window.location.href ='/Napflix/list?titleID=%s&yearID=%s&directorID=%s&starID=%s&genreID=%s&sort=%s&page=%d&limit=%s'\">Next</button></th>",
                         titlep, yearp, directorp, starp, genrep, req.getParameter("sort"), page + 1, req.getParameter("limit")));
             }
             else{
@@ -274,7 +302,10 @@ public class MovieListServlet extends HttpServlet {
                     titlep, yearp, directorp, starp, genrep, 1,req.getParameter("limit")));
             out.write(" }");
             out.write(" </script>");
-
+            out.write("<script src=\"https://code.jquery.com/jquery-3.4.1.min.js\"></script>\n" +
+                    "<script src=\"https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js\" integrity=\"sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo\" crossorigin=\"anonymous\"></script>\n" +
+                    "<script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js\" integrity=\"sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6\" crossorigin=\"anonymous\"></script>");
+            out.write("<script src = \"/Napflix/movielist.js\"></script>");
 
         }catch (Exception e){
             e.printStackTrace();

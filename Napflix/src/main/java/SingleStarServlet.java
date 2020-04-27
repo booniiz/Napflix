@@ -34,7 +34,16 @@ public class SingleStarServlet extends HttpServlet {
         String query = "SELECT s.name,s.birthYear, GROUP_CONCAT(DISTINCT m.id) 'movies'" +
                 "FROM stars s inner join stars_in_movies sim inner join movies m " +
                 "WHERE s.id = sim.starID AND sim.movieID = m.id AND s.id = ?";
-
+        out.write("<head>\n" +
+                "    <!-- Required meta tags -->\n" +
+                "    <meta charset=\"utf-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n" +
+                "\n" +
+                "    <!-- Bootstrap CSS -->\n" +
+                "    <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css\" integrity=\"sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh\" crossorigin=\"anonymous\">\n" +
+                "\n" +
+                "\n" +
+                "</head>");
 
 
         databaseAuthentication da = new databaseAuthentication();
@@ -43,9 +52,19 @@ public class SingleStarServlet extends HttpServlet {
                 statement.setString(1, starID);
                 try(ResultSet resultSet = statement.executeQuery()){
                     while (resultSet.next()) {
-                        out.write(String.format("<th><a href = \"/Napflix/list?titleID=%s&yearID=%s&directorID=%s&starID=%s&genreID=%s&sort=%s&page=%s&limit=%s\">BACK TO MOVIE LIST</a></th>"
-                                ,titlep,yearp,directorp,starp,genrep,sortp,pagep,limitp));
-
+                        String s = String.format("<th><a class = \"nav-link text-white\"href = \"/Napflix/list?titleID=%s&yearID=%s&directorID=%s&starID=%s&genreID=%s&sort=%s&page=%s&limit=%s\">BACK TO MOVIE LIST</a></th>"
+                                ,titlep,yearp,directorp,starp,genrep,sortp,pagep,limitp);
+                        out.write("<nav class=\"navbar navbar-expand-lg navbar-light bg-primary\">" +
+                                "    <span class = \"navbar-brand text-white\">Movie List</span>\n" +
+                                "    <ul class=\"navbar-nav ml-auto\">\n" +
+                                "        <li class = \"navbar-item \">\n" +
+                                s+
+                                "        </li>\n" +
+                                "        <li class = \"navbar-item\">\n" +
+                                "            <a class = \"nav-link text-white\" href = \"/Napflix/checkout.html\">My carts(Checkout)</a>\n" +
+                                "        </li>\n" +
+                                "    </ul>\n" +
+                                "</nav>");
                         out.write("<p>Name: " + resultSet.getString("s.name") + "</p>");
                         int birthYear = resultSet.getInt("s.birthYear");
                         if (birthYear != 0){

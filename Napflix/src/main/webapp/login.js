@@ -4,7 +4,7 @@ function handleResult(data){
         //After logon, we redirect
         window.location.replace('/Napflix/mainmenu.html')
     }else{
-        $("#login_failed").slideDown(50);
+        $("#login_failed").slideDown(1000);
     }
 }
 

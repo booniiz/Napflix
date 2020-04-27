@@ -1,7 +1,9 @@
 function handleResult(data){
     try{
         if (JSON.parse(data)["CCValid"] == "True"){
-            console.log("Good!")
+            console.log("Good!");
+            sessionStorage.setItem("payment_response",data);
+            window.location.replace('/Napflix/confirmation.html')
         }else{
             throw "CC Not found"
         }
