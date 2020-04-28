@@ -24,7 +24,7 @@ https://drive.google.com/file/d/1oS_OvPczb2WqV7QAAe9KpVphNClV6uJC/view?usp=shari
 
   For substring if the user search with just one letter then it will match the pattern in front of the term(like 'z%').
   If the length of the search is greater than just 1 letter, then the query will try to find the pattern anywhere in the term(like '%love%').
-  Works for titles,directors, and stars.
+
   
 4.Contributions
 
