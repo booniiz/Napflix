@@ -38,17 +38,7 @@
 <h1></h1>
 <div style="text-align:center" class="form-group">
     <div style="text-align:center">
-        <div style="width:600px; float:left;">
-            <h2>Genres</h2>
-        </div>
-        <div style="width:600px; float:right;">
-            <h2>Titles</h2>
-        </div>
-        <form>
-            <div id = "genre" style="width:600px; float:left;">
-
-            </div>
-        </form>
+        <div id = "genre" style="width:600px; float:left;"></div>
         <div id="looptitles" style="width:600px; float:right;"></div>
     </div>
 </div>
@@ -63,7 +53,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
 <script>
-    var x = "<h3><a href = '/Napflix/list?titleID=*&sort=m.title ASC,r.rating DESC&page=1&limit=10'>*</a></h3>", i;
+    var x =  "<h2>Titles</h2>"+"<h3><a href = '/Napflix/list?titleID=*&sort=m.title ASC,r.rating DESC&page=1&limit=10'>*</a></h3>", i;
     var str = "a";
     var n = str.charCodeAt(0);
     for (i = 0; i <= 9; i++) {
@@ -95,7 +85,7 @@
         method: "GET",
         url: "ajax/main",
         success: function(data){
-            var x = "";
+            var x =  "<h2>Genres</h2>";
             for (i = 0; i < data.length; i++) {
                 x = x + "<h3><a href = '/Napflix/list?genreID=" +data[i] + "&sort=m.title ASC,r.rating DESC&page=1&limit=10'>" +data[i]+"</a></h3>";
 
