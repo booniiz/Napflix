@@ -15,9 +15,13 @@
 </head>
 
 <body>
-<div id = "login_failed" class="alert alert-danger" role="alert">
-    Wrong username,password and/or failed Recaptcha.
+<div id = "recaptcha_failed" class="alert alert-danger" role="alert">
+    Error: failed recaptcha
 </div>
+<div id = "login_failed" class="alert alert-danger" role="alert">
+    Error: wrong username and/or password
+</div>
+
 <form name = "loginform" action="#" method="POST">
     <div class = "form-group">
         <label>Username</label>
@@ -27,9 +31,10 @@
         <label>Password</label>
         <input type = "password" class = "form-control" id = "password" name = "password">
     </div>
-    <button type="button" class="btn btn-primary" id = "Signin_button">Sign in</button>
     <p></p>
     <div class="g-recaptcha" data-sitekey="6Le_svQUAAAAABKoqhFMUaBO0ONQUzqVX294IhAF"></div>
+    <p></p>
+    <button type="button" class="btn btn-primary" id = "Signin_button">Sign in</button>
 </form>
 
 

@@ -19,7 +19,7 @@ public class UserAuth extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
-        String gRecaptchaResponse = req.getParameter("g-recaptcha-response");
+        String gRecaptchaResponse = req.getParameter("recaptcha");
         System.out.println("Username: " + username);
         System.out.println("Password: " + password);
         System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
