@@ -5,10 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
@@ -39,10 +36,11 @@ public class UserAuth extends HttpServlet {
         try{
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             Connection conn = DriverManager.getConnection(da.getAddress(),da.getUsername(), da.getPassowrd());
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT *\n" +
+            String query ="SELECT *\n" +
                     "FROM customers\n" +
-                    "WHERE email = \""+ username +"\" and password = \""+ password +"\";");
+                    "WHERE email = \""+ username +"\" and password = \""+ password +"\";";
+            PreparedStatement statement = conn.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
                 System.out.println("Success");
                 HttpSession session = req.getSession();

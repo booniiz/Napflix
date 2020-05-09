@@ -114,8 +114,10 @@ public class MovieListServlet extends HttpServlet {
         try{
             Connection conn = DriverManager.getConnection(da.getAddress(),da.getUsername(), da.getPassowrd());
             //Relax MySql Standard(Set Mode to None)
-            Statement temp = conn.createStatement();
-            temp.executeQuery("set GLOBAL sql_mode = ''");
+
+            String mode = "set GLOBAL sql_mode = ''";
+            PreparedStatement temp = conn.prepareStatement(mode);
+            temp.executeQuery();
             temp.close();
             //Actual code
             String queryTitle = "SELECT m.id, m.title,m.year,m.director,r.rating,group_concat(DISTINCT g.name separator ',') 'genre',group_concat(DISTINCT s.name separator ',') 'star'" +
@@ -141,13 +143,15 @@ public class MovieListServlet extends HttpServlet {
                 cur.setRating(resultSet.getFloat("r.rating"));
 
                 //Getting genre
-                Statement statement1 = conn.createStatement();
-                ResultSet genresResultSet = statement1.executeQuery("SELECT genres.name\n" +
+
+                String genresResult = "SELECT genres.name\n" +
                         "FROM genres_in_movies\n" +
                         "INNER JOIN genres on genres_in_movies.genreID = genres.ID\n" +
                         "WHERE genres_in_movies.movieID = \""+cur.getId()+"\"\n" +
-                        "ORDER BY name ASC LIMIT 3;");
+                        "ORDER BY name ASC LIMIT 3;";
                 List<String> genres = new ArrayList<>();
+                PreparedStatement statement1 = conn.prepareStatement(genresResult);
+                ResultSet genresResultSet = statement1.executeQuery();
                 while (genresResultSet.next() != false){
                     genres.add(genresResultSet.getString("name"));
                 }
@@ -156,10 +160,9 @@ public class MovieListServlet extends HttpServlet {
                 statement1.close();
 
                 //Getting star
-                Statement statement2 = conn.createStatement();
-                ResultSet starResultSet = statement2.executeQuery("SELECT moviedata.name,sim.starID,count(*) FROM 	(SELECT name, starID FROM stars_in_movies INNER JOIN stars on stars_in_movies.starID = stars.ID WHERE stars_in_movies.movieID = \"" + cur.getId()  + "\") AS moviedata JOIN stars_in_movies sim WHERE sim.starID = moviedata.starID GROUP BY starID ORDER BY COUNT(*) DESC, moviedata.name ASC LIMIT 3;");
-
-
+                String starResult = "SELECT moviedata.name,sim.starID,count(*) FROM 	(SELECT name, starID FROM stars_in_movies INNER JOIN stars on stars_in_movies.starID = stars.ID WHERE stars_in_movies.movieID = \"" + cur.getId()  + "\") AS moviedata JOIN stars_in_movies sim WHERE sim.starID = moviedata.starID GROUP BY starID ORDER BY COUNT(*) DESC, moviedata.name ASC LIMIT 3;";
+                PreparedStatement statement2 = conn.prepareStatement(starResult);
+                ResultSet starResultSet = statement2.executeQuery();
                 Map<String,String> stars = new LinkedHashMap<>();
                 while (starResultSet.next() != false){
                     stars.put(starResultSet.getString("starID"), starResultSet.getString("name"));

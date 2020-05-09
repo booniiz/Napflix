@@ -32,8 +32,8 @@ public class SingleStarServlet extends HttpServlet {
         }
 
         String query = "SELECT s.name,s.birthYear, GROUP_CONCAT(DISTINCT m.id) 'movies'" +
-                "FROM stars s inner join stars_in_movies sim inner join movies m " +
-                "WHERE s.id = sim.starID AND sim.movieID = m.id AND s.id = ?";
+                " FROM stars s inner join stars_in_movies sim inner join movies m " +
+                " WHERE s.id = sim.starID AND sim.movieID = m.id AND s.id = ?";
         out.write("<head>\n" +
                 "    <!-- Required meta tags -->\n" +
                 "    <meta charset=\"utf-8\">\n" +
