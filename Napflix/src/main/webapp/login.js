@@ -22,6 +22,7 @@ function makeAjax(){
             dataType: 'Text'
         }
     );
+    grecaptcha.reset();
 
 }
 
