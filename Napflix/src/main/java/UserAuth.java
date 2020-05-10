@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.*;
 import java.util.HashMap;
-
+import org.jasypt.util.password.StrongPasswordEncryptor;
 import com.google.gson.Gson;
 
 @WebServlet(urlPatterns = "/ajax/login")
@@ -38,11 +38,11 @@ public class UserAuth extends HttpServlet {
             Connection conn = DriverManager.getConnection(da.getAddress(),da.getUsername(), da.getPassowrd());
             String query ="SELECT *\n" +
                     "FROM customers\n" +
-                    "WHERE email = \""+ username +"\" and password = \""+ password +"\";";
+                    "WHERE email = \""+ username + "\"; ";
+            System.out.println(query);
             PreparedStatement statement = conn.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()){
-                System.out.println("Success");
+            if (resultSet.next() && new StrongPasswordEncryptor().checkPassword(password, resultSet.getString("password"))){
                 HttpSession session = req.getSession();
                 session.setAttribute("id",resultSet.getInt("ID"));
                 session.setAttribute("firstName", resultSet.getString("firstName"));

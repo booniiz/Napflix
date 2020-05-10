@@ -44,6 +44,12 @@
       <artifactId>gson</artifactId>
       <version>2.8.6</version>
     </dependency>
+    <!-- encryption lib provided by the professor -->
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.9.2</version>
+    </dependency>
   </dependencies>
 
 
@@ -83,4 +89,15 @@
       </plugins>
     </pluginManagement>
   </build>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>HTTPSOnly</web-resource-name>
+      <url-pattern>/*</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+
 </project>
