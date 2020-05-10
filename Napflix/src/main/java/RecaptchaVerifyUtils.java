@@ -1,3 +1,12 @@
+/* Title: RecaptchaVerifyUtils
+Author: Chen Li
+Date: 5/9/2020
+Description: Use for validating google recaptcha on a java servlet.
+The code is lifted from professor Chen's example.
+For educational purposes in Cs 122b only.
+Link: https://github.com/UCI-Chenli-teaching/cs122b-spring20-project3-recaptcha-example.git
+*/
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -50,9 +59,9 @@ public class RecaptchaVerifyUtils {
         // Get the InputStream from Connection to read data sent from the server.
         InputStream inputStream = conn.getInputStream();
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-        
+
         JsonObject jsonObject = new Gson().fromJson(inputStreamReader, JsonObject.class);
-        
+
         inputStreamReader.close();
         
         System.out.println("Response: " + jsonObject.toString());
