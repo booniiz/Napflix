@@ -9,15 +9,20 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <nav class="navbar navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <span class = navbar-brand>Main Menu</span>
-        <ul class="navbar-nav">
+        <ul class="navbar-nav ml-auto">
+                <li class = "navbar-item" >
+                    <a class = "nav-link"  id="admin" style="visibility: hidden" href = "/Napflix/dashboard.html">Dashboard</a>
+                </li>
+
             <li class = "navbar-item">
                 <a class = "nav-link" href = "/Napflix/checkout.html">My carts(Checkout)</a>
             </li>
         </ul>
     </nav>
 </head>
+
 <body>
 <h1></h1>
 <form id="searchform" onsubmit="getSearch()">
@@ -86,9 +91,13 @@
         url: "ajax/main",
         success: function(data){
             var x =  "<h2>Genres</h2>";
-            for (i = 0; i < data.length; i++) {
+            const params = new URLSearchParams(document.location.search);
+            const s = params.get("admin");
+            if(s === "True"){
+                document.getElementById("admin").style.visibility = "visible";
+            }
+            for (i = 1; i < data.length; i++) {
                 x = x + "<h3><a href = '/Napflix/list?genreID=" +data[i] + "&sort=m.title ASC,r.rating DESC&page=1&limit=10'>" +data[i]+"</a></h3>";
-
             }
             document.getElementById("genre").innerHTML = x;
         },

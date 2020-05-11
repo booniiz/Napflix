@@ -27,10 +27,11 @@ public class UserAuth extends HttpServlet {
         try {
             RecaptchaVerifyUtils.verify(gRecaptchaResponse);
         } catch (Exception e) {
-            System.out.println(e);
             loginInfo.put("Recaptcha","False");
             loginInfo.put("Login","False");
+            loginInfo.put("Admin","False");
             resp.getWriter().write(gson.toJson(loginInfo));
+            System.out.println("Failure");
             return;
         }
         try{
@@ -39,7 +40,6 @@ public class UserAuth extends HttpServlet {
             String query ="SELECT *\n" +
                     "FROM customers\n" +
                     "WHERE email = \""+ username + "\"; ";
-            System.out.println(query);
             PreparedStatement statement = conn.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next() && new StrongPasswordEncryptor().checkPassword(password, resultSet.getString("password"))){
@@ -49,13 +49,37 @@ public class UserAuth extends HttpServlet {
                 session.setAttribute("lastName", resultSet.getString("lastName"));
                 session.setAttribute("ccID", resultSet.getString("ccID"));
                 session.setAttribute("address", resultSet.getString("address"));
+                session.setAttribute("type", "user");
                 loginInfo.put("Recaptcha","True");
                 loginInfo.put("Login","True");
+                loginInfo.put("Admin","False");
+                System.out.println("Login as User");
             }
             else{
-                loginInfo.put("Recaptcha","True");
-                loginInfo.put("Login","False");
-                System.out.println("Failure");
+                String adminQuery ="SELECT *\n" +
+                        "FROM employees\n" +
+                        "WHERE email = \""+ username + "\"; ";
+                PreparedStatement adminStatement = conn.prepareStatement(adminQuery);
+                ResultSet adminSet = adminStatement.executeQuery();
+                if (adminSet.next() && new StrongPasswordEncryptor().checkPassword(password, adminSet.getString("password"))) {
+                    HttpSession session = req.getSession();
+                    session.setAttribute("id",0);
+                    session.setAttribute("firstName", "Admin");
+                    session.setAttribute("lastName", "null");
+                    session.setAttribute("ccID", "null");
+                    session.setAttribute("address", "null");
+                    session.setAttribute("type", "admin");
+                    loginInfo.put("Recaptcha","True");
+                    loginInfo.put("Login","True");
+                    loginInfo.put("Admin","True");
+                    System.out.println("Login as Admin");
+                }
+                else{
+                    loginInfo.put("Recaptcha","True");
+                    loginInfo.put("Login","False");
+                    loginInfo.put("Admin","False");
+                    System.out.println("Failure");
+                }
             }
             resp.getWriter().write(gson.toJson(loginInfo));
 

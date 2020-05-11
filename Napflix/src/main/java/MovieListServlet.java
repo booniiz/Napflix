@@ -203,7 +203,7 @@ public class MovieListServlet extends HttpServlet {
 
             out.write("<tr>");
                     out.write("<th>Title</th>");
-                    out.write("<th>Year</th>>");
+                    out.write("<th>Year</th>");
                     out.write("<th>Rating</th>");
                     out.write("<th>Genres</th>");
                     out.write("<th>Star</th>");

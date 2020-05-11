@@ -3,7 +3,12 @@ function handleResult(data){
     if (json["Recaptcha"] === "True"){
         if (json["Login"] === "True"){
             //After logon, we redirect
-            window.location.replace('/Napflix/mainmenu.html')
+            if (json["Admin"] === "True"){
+                window.location.replace('/Napflix/mainmenu.html?admin=True');
+            }
+            else {
+                window.location.replace('/Napflix/mainmenu.html');
+            }
         }else{
             $("#login_failed").slideDown(1000);
         }
