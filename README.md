@@ -9,7 +9,7 @@ cs122b-spring20-team-128 created by GitHub Classroom
   Preconditions:
   
     - You need to populate the database first.
-    - Run the stored-procedure
+    - Run the stored-procedure(IN THE NAPFLIX DIRECOTRY)
     - Encrypt passwords for both users and employees
     - You provide(hard code) your database URI, username, password into databaseAuthentication class.
     - Your Tomcat server is clean(fresh out of the zips with no other webapps)
