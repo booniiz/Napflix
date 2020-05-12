@@ -37,6 +37,7 @@ public class XMLParser {
         System.out.println(System.currentTimeMillis() - start);
     //The last part took 1204533 misecond.
         //Naive took: 186401 + 1204533 = 1390 Seconds
+        //INDEX TOOK 635703 = 635 Seconds
     }
 
 }

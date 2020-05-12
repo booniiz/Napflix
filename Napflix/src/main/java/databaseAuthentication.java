@@ -6,7 +6,7 @@ public final class databaseAuthentication {
      */
     private final String address = "jdbc:mysql://localhost:3306/Napflix";
     private final String username = "root";
-    private final String passowrd = "5B2b43d5b3?";
+    private final String passowrd = "mbBMyJy6UYuQ";
 
     public String getAddress() {
         // Weird requirement by server....
