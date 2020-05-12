@@ -19,19 +19,18 @@
 
 
 </head>
-<body onload ="check()">
-
+<body onload ="start()">
+<div id = "message" class="alert alert-info" role="alert"></div>
 <p>&nbsp;</p>
-<form id="movieInsert" onsubmit="">
+<form id="movieInsert" onsubmit="addMovie()">
     <div style="text-align:center" class="form-group">
-        <h1>Insert movies</h1>
-        <input type="text" name="titleID" placeholder = "Title">
-        <input type="text" name="yearID" placeholder ="Year">
-        <input type="text" name="directorID" placeholder ="Director">
-        <input type="text" name="starID" placeholder = "Star">
-        <input type="hidden" name="sort" value = "m.title ASC,r.rating DESC">
-        <input type="hidden" name="page" value = "1">
-        <input type="hidden" name="limit" value = "10">
+        <h2>Insert movies</h2>
+        <input type="text" id="titleID" placeholder = "Title">
+        <input type="text" id="yearID" placeholder ="Year">
+        <input type="text" id="directorID" placeholder ="Director">
+        <input type="text" id="starID" placeholder = "Star">
+        <input type="text" id="birthdayID" placeholder = "Star's birthday(optional)">
+        <input type="text" id="genreID" placeholder = "Genre">
         <input type="submit" value="ADD">
     </div>
 </form>
@@ -39,20 +38,26 @@
 <p>&nbsp;</p>
 <form id="starInsert" onsubmit="addStars()">
     <div style="text-align:center" class="form-group">
-        <h1>Insert stars</h1>
+        <h2>Insert stars</h2>
         <input type="text" id="nameID" placeholder = "Name">
         <input type="text" id="birthYearID" placeholder ="Birthday">
+
         <input type="submit" value="ADD">
     </div>
 </form>
 
 <p>&nbsp;</p>
-<form id="metadata" onsubmit="metadata()">
-    <div style="text-align:center" class="form-group">
-        <h1>Show metadata</h1>
-        <input type="submit" value="show">
+
+<h2 style="text-align:center">MetaData</h2>
+<h1></h1>
+<div style="text-align:center" class="form-group">
+    <div style="text-align:center">
+        <div id = "left" style="width:800px; float:left;"></div>
+        <div id="right" style="width:800px; float:right;"></div>
     </div>
-</form>
+</div>
+
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

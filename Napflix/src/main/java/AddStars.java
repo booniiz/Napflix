@@ -8,31 +8,30 @@ import java.sql.*;
 
 import com.google.gson.Gson;
 
-@WebServlet(name = "addStars", urlPatterns = "ajax/addStars")
+@WebServlet(urlPatterns = "/ajax/addStars")
 public class AddStars extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        System.out.println("PLEASE WORKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Gson gson = new Gson();
         String report,name;
         int maxId = 0;
         int birthday;
 
-        if(req.getParameter("name") == null  || req.getParameter("yearID").compareTo("") == 0){
+        if(req.getParameter("nameID") == null  || req.getParameter("nameID").compareTo("") == 0){
             report="FAILURE: You need to at least add name to add stars ";
             resp.getWriter().write(gson.toJson(report));
             System.out.println(report);
             return;
         }
         else{
-            name = req.getParameter("name");
+            name = req.getParameter("nameID");
         }
 
-        if(req.getParameter("birthday") == null  || req.getParameter("birthday").compareTo("") == 0){
+        if(req.getParameter("birthYearID") == null  || req.getParameter("birthYearID").compareTo("") == 0){
             birthday=0;
         }
         else{
-            birthday = Integer.parseInt(req.getParameter("birthday"));
+            birthday = Integer.parseInt(req.getParameter("birthYearID"));
         }
 
         String query ="select max(id) 'id'from stars;";
@@ -52,9 +51,9 @@ public class AddStars extends HttpServlet {
             String call =String.format("CALL add_stars('nm%d','%s',%d);",maxId+1,name,birthday);
             PreparedStatement insertStatement = conn.prepareStatement(call);
             insertStatement.executeQuery();
-            report = call;
+            report = "Success: inserted " + name +" into the database with a new ID = " +"nm"+ (maxId+1);
             resp.getWriter().write(gson.toJson(report));
-            System.out.println(report);
+            System.out.println(call);
         }catch (Exception e){
             e.printStackTrace();
         }

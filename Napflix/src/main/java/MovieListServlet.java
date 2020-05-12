@@ -210,7 +210,7 @@ public class MovieListServlet extends HttpServlet {
                     out.write("<th>add_to_cart</th>");
                 out.write("</tr>");
                 int size=movieList.size();
-                if(size>1){
+                if(size>limit-1){
                     size=movieList.size()-1;
                 }
                 for (int i =0;i<size;i++){
