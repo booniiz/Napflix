@@ -161,6 +161,15 @@ public class MovieParser {
                     Statement statement = conn.createStatement();
                     statement.executeUpdate(temp);
                     statement.close();
+                    for (String g:m.getGenres()){
+                        int genreID = getGenresID(g);
+                        String temp1 = "INSERT INTO genres_in_movies VALUES(?,?)";
+                        PreparedStatement preparedStatement = conn.prepareStatement(temp1);
+                        preparedStatement.setInt(1, genreID);
+                        preparedStatement.setString(2, m.getId());
+                        preparedStatement.executeUpdate();
+                        preparedStatement.close();
+                    }
                 }
             }
 
@@ -195,5 +204,34 @@ public class MovieParser {
         }
         return out;
 
-    };
+    }
+
+    public int getGenresID(String genreName){
+        int temp = -1;
+        try{
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            databaseAuthentication da = new databaseAuthentication();
+            Connection conn = DriverManager.getConnection(da.getAddress(),da.getUsername(), da.getPassowrd());
+            Statement statement = conn.createStatement();
+            ResultSet r =  statement.executeQuery("SELECT ID FROM genres WHERE name = \"" + genreName + "\"");
+            if(r.next()){
+                temp = r.getInt(1);
+            }
+            r.close();
+            statement.close();
+            conn.close();
+            return temp;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return temp;
+    }
 }
