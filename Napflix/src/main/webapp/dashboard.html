@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <span class = navbar-brand>Dashboard</span>
+        <ul class="navbar-nav ml-auto">
+            <li class = "navbar-item">
+                <a class = "nav-link text-white" href = "/Napflix/mainmenu.html?admin=True">Back to Main Menu</a>
+            </li>
+        </ul>
+    </nav>
+
+
+</head>
+<body onload ="start()">
+<div id = "message" class="alert alert-info" role="alert"></div>
+<p>&nbsp;</p>
+<form id="movieInsert" onsubmit="addMovie()">
+    <div style="text-align:center" class="form-group">
+        <h2>Insert movies</h2>
+        <input type="text" id="titleID" placeholder = "Title">
+        <input type="text" id="yearID" placeholder ="Year">
+        <input type="text" id="directorID" placeholder ="Director">
+        <input type="text" id="starID" placeholder = "Star">
+        <input type="text" id="birthdayID" placeholder = "Star's birthday(optional)">
+        <input type="text" id="genreID" placeholder = "Genre">
+        <input type="submit" value="ADD">
+    </div>
+</form>
+
+<p>&nbsp;</p>
+<form id="starInsert" onsubmit="addStars()">
+    <div style="text-align:center" class="form-group">
+        <h2>Insert stars</h2>
+        <input type="text" id="nameID" placeholder = "Name">
+        <input type="text" id="birthYearID" placeholder ="Birthday">
+
+        <input type="submit" value="ADD">
+    </div>
+</form>
+
+<p>&nbsp;</p>
+
+<h2 style="text-align:center">MetaData</h2>
+<h1></h1>
+<div style="text-align:center" class="form-group">
+    <div style="text-align:center">
+        <div id = "left" style="width:800px; float:left;"></div>
+        <div id="right" style="width:800px; float:right;"></div>
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="dashboard.js"></script>
+
+</body>

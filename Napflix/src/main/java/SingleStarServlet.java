@@ -97,7 +97,7 @@ public class SingleStarServlet extends HttpServlet {
                             String name = entry.getKey();
                             String id = entry.getValue();
                             out.write(String.format("<th><a href = \"/Napflix/api/movie?movieID=%s&titleID=%s&yearID=%s&directorID=%s&starID=%s&genreID=%s&sort=%s&page=%s&limit=%s\">%s</a></th>",
-                                    id,titlep,yearp,directorp,starp,genrep,sortp,pagep,limitp,name));
+                                    id,titlep,yearp,directorp,starp,genrep,sortp,pagep,limitp,name)+ " ");
                         }
                         out.write("</p>");
                     }

@@ -121,8 +121,7 @@ public class MovieListServlet extends HttpServlet {
             temp.close();
             //Actual code
             String queryTitle = "SELECT m.id, m.title,m.year,m.director,r.rating,group_concat(DISTINCT g.name separator ',') 'genre',group_concat(DISTINCT s.name separator ',') 'star'" +
-                    "FROM movies m JOIN ratings r JOIN genres g JOIN genres_in_movies gim JOIN stars_in_movies sim JOIN stars s WHERE m.id = r.movieId AND sim.starId = s.id AND sim.movieID =m.id AND m.ID = gim.movieID AND gim.genreID = g.ID "
-                    + title+year+director+star+genre+  "group by m.title order by " + sort+ " LIMIT ? OFFSET ?";
+                    "FROM movies m JOIN ratings r JOIN genres g JOIN genres_in_movies gim JOIN stars_in_movies sim JOIN stars s WHERE m.id = r.movieId AND sim.starId = s.id AND sim.movieID =m.id AND m.ID = gim.movieID AND gim.genreID = g.ID " +title+year+director+star+genre+  "group by m.title order by " + sort+ " LIMIT ? OFFSET ?";
             PreparedStatement statement = conn.prepareStatement(queryTitle);
             System.out.print(queryTitle);
             statement.setInt(1, limit);
@@ -147,10 +146,11 @@ public class MovieListServlet extends HttpServlet {
                 String genresResult = "SELECT genres.name\n" +
                         "FROM genres_in_movies\n" +
                         "INNER JOIN genres on genres_in_movies.genreID = genres.ID\n" +
-                        "WHERE genres_in_movies.movieID = \""+cur.getId()+"\"\n" +
+                        "WHERE genres_in_movies.movieID = ? \n" +
                         "ORDER BY name ASC LIMIT 3;";
                 List<String> genres = new ArrayList<>();
                 PreparedStatement statement1 = conn.prepareStatement(genresResult);
+                statement1.setString(1, cur.getId());
                 ResultSet genresResultSet = statement1.executeQuery();
                 while (genresResultSet.next() != false){
                     genres.add(genresResultSet.getString("name"));
@@ -160,8 +160,9 @@ public class MovieListServlet extends HttpServlet {
                 statement1.close();
 
                 //Getting star
-                String starResult = "SELECT moviedata.name,sim.starID,count(*) FROM 	(SELECT name, starID FROM stars_in_movies INNER JOIN stars on stars_in_movies.starID = stars.ID WHERE stars_in_movies.movieID = \"" + cur.getId()  + "\") AS moviedata JOIN stars_in_movies sim WHERE sim.starID = moviedata.starID GROUP BY starID ORDER BY COUNT(*) DESC, moviedata.name ASC LIMIT 3;";
+                String starResult = "SELECT moviedata.name,sim.starID,count(*) FROM (SELECT name, starID FROM stars_in_movies INNER JOIN stars on stars_in_movies.starID = stars.ID WHERE stars_in_movies.movieID = ? ) AS moviedata JOIN stars_in_movies sim WHERE sim.starID = moviedata.starID GROUP BY starID ORDER BY COUNT(*) DESC, moviedata.name ASC LIMIT 3;";
                 PreparedStatement statement2 = conn.prepareStatement(starResult);
+                statement2.setString(1, cur.getId());
                 ResultSet starResultSet = statement2.executeQuery();
                 Map<String,String> stars = new LinkedHashMap<>();
                 while (starResultSet.next() != false){
@@ -203,14 +204,14 @@ public class MovieListServlet extends HttpServlet {
 
             out.write("<tr>");
                     out.write("<th>Title</th>");
-                    out.write("<th>Year</th>>");
+                    out.write("<th>Year</th>");
                     out.write("<th>Rating</th>");
                     out.write("<th>Genres</th>");
                     out.write("<th>Star</th>");
                     out.write("<th>add_to_cart</th>");
                 out.write("</tr>");
                 int size=movieList.size();
-                if(size>1){
+                if(size>limit-1){
                     size=movieList.size()-1;
                 }
                 for (int i =0;i<size;i++){
