@@ -39,9 +39,8 @@ public class UserAuth extends HttpServlet {
             Connection conn = DriverManager.getConnection(da.getAddress(),da.getUsername(), da.getPassowrd());
             String query ="SELECT *\n" +
                     "FROM customers\n" +
-                    "WHERE email = ? ; ";
+                    "WHERE email = \""+ username + "\"; ";
             PreparedStatement statement = conn.prepareStatement(query);
-            statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next() && new StrongPasswordEncryptor().checkPassword(password, resultSet.getString("password"))){
                 HttpSession session = req.getSession();
@@ -59,9 +58,8 @@ public class UserAuth extends HttpServlet {
             else{
                 String adminQuery ="SELECT *\n" +
                         "FROM employees\n" +
-                        "WHERE email = ? ; ";
+                        "WHERE email = \""+ username + "\"; ";
                 PreparedStatement adminStatement = conn.prepareStatement(adminQuery);
-                adminStatement.setString(1, username);
                 ResultSet adminSet = adminStatement.executeQuery();
                 if (adminSet.next() && new StrongPasswordEncryptor().checkPassword(password, adminSet.getString("password"))) {
                     HttpSession session = req.getSession();

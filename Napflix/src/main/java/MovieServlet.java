@@ -41,7 +41,7 @@ public class MovieServlet extends HttpServlet {
                 "AND sim.starId = s.id AND sim.movieID =m.id AND g.id = gin.genreId " +
                 "AND gin.movieId = m.id AND m.id =?";
 
-        String query2 = "SELECT moviedata.name,sim.starID,count(*) FROM (SELECT name, starID FROM stars_in_movies INNER JOIN stars on stars_in_movies.starID = stars.ID WHERE stars_in_movies.movieID = ? ) AS moviedata JOIN stars_in_movies sim WHERE sim.starID = moviedata.starID GROUP BY starID ORDER BY COUNT(*) DESC, moviedata.name ASC LIMIT 3";
+        String query2 = "SELECT moviedata.name,sim.starID,count(*) FROM (SELECT name, starID FROM stars_in_movies INNER JOIN stars on stars_in_movies.starID = stars.ID WHERE stars_in_movies.movieID = \"" + movieID + "\") AS moviedata JOIN stars_in_movies sim WHERE sim.starID = moviedata.starID GROUP BY starID ORDER BY COUNT(*) DESC, moviedata.name ASC LIMIT 3";
 
         databaseAuthentication da = new databaseAuthentication();
         out.write("<head>\n" +
@@ -90,7 +90,6 @@ public class MovieServlet extends HttpServlet {
                         out.write("</p>");
                         out.write("<p>Stars: ");
                         PreparedStatement statement2 = conn.prepareStatement(query2);
-                        statement2.setString(1, movieID);
                         ResultSet resultSet2 = statement2.executeQuery();
                         //TOKENIZE each starID and store in an array
                         Map<String,String> stars = new LinkedHashMap<>();
