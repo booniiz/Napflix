@@ -7,7 +7,7 @@ public class Movie {
     private String title;
     private int year;
     private String director;
-    private float rating;
+    private float rating = 0;
     private Map<String,String> starIDMap;
     private List<String> Genres;
 

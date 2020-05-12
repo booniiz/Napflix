@@ -21,6 +21,7 @@ public class MovieParser {
             genres.addAll(m.getGenres());
         }
         insertToDatabase();
+        System.out.println(movies);
     }
 
 //    public String getDirectorName(NodeList directorfilmsChildNodeList){
@@ -63,6 +64,9 @@ public class MovieParser {
         }else{
             System.out.printf("%s didn't have a director \n", title);
         }
+        if(title.equals("The Matrix")){
+            System.out.println(title);
+        };
         List<String> genres = getGenres(elem.getElementsByTagName("cats"));
 
         this.movies.add(new Movie(id, title, year, director, genres));
@@ -124,7 +128,7 @@ public class MovieParser {
                 genres.add(genresCode.getOrDefault(temp.substring(0, 4), temp.substring(0, 4)));
                 genres.add(genresCode.getOrDefault(temp.substring(5, 9), temp.substring(5, 9)));
             }else if(genresCode.containsKey(temp.replaceAll("\\s",""))){
-
+                genres.add(genresCode.get(temp.replaceAll("\\s","")));
             }else{
                 if (temp != ""){
                     genres.add(genresCode.getOrDefault(temp,temp));
@@ -148,6 +152,9 @@ public class MovieParser {
                 statement.close();
             }
             for (Movie m: new ArrayList<>(this.movies)){
+                if (m.getTitle() == "The Matrix"){
+                    System.out.println("he");
+                }
                 if (m.getId() == null){
                     System.out.println(m.getTitle() + "'s ID is null");
                 }else if (m.getTitle() == null){
@@ -161,10 +168,17 @@ public class MovieParser {
                     Statement statement = conn.createStatement();
                     statement.executeUpdate(temp);
                     statement.close();
+                    String temp2 = "INSERT INTO ratings VALUES(?,?,?)";
+                    PreparedStatement temp1 = conn.prepareStatement(temp2);
+                    temp1.setString(1,m.getId());
+                    temp1.setInt(2,0);
+                    temp1.setInt(3,0);
+                    temp1.executeUpdate();
+                    temp1.close();
                     for (String g:m.getGenres()){
                         int genreID = getGenresID(g);
-                        String temp1 = "INSERT INTO genres_in_movies VALUES(?,?)";
-                        PreparedStatement preparedStatement = conn.prepareStatement(temp1);
+                        String temp3 = "INSERT INTO genres_in_movies VALUES(?,?)";
+                        PreparedStatement preparedStatement = conn.prepareStatement(temp3);
                         preparedStatement.setInt(1, genreID);
                         preparedStatement.setString(2, m.getId());
                         preparedStatement.executeUpdate();

@@ -18,26 +18,28 @@ public class XMLParser {
         long start = System.currentTimeMillis();
         XMLParser xp = new XMLParser();
 
+        //Main XML Source
         String xmlSourceAddress = args[0];
         Document dom = xp.getDom(xmlSourceAddress);
         MovieParser mp = new MovieParser();
         mp.parseDom(dom);
 
+        //CastXMLSource
 //        String castXmlSourceAddress = args[1];
 //        Document dom2 = xp.getDom(castXmlSourceAddress);
 //        CastParser cp = new CastParser();
 //        cp.parseDom(dom2);
-//        //The upper two part takes 186401 misecond.
-//
+
+        //MovieCastXmlSource(Pass in as programs argument)
+        //https://www.jetbrains.com/help/idea/run-debug-configuration-application.html
 //        String movieCastXmlSouceAddress = args[2];
 //        Document dom3 = xp.getDom(movieCastXmlSouceAddress);
 //        MovieCastParser mcp = new MovieCastParser();
 //        mcp.parseDom(dom3);
-//
+
         System.out.println(System.currentTimeMillis() - start);
-    //The last part took 1204533 misecond.
         //Naive took: 186401 + 1204533 = 1390 Seconds
-        //INDEX TOOK 635703 = 635 Seconds
+        //INDEX TOOK 561719 = 561 Seconds
     }
 
 }

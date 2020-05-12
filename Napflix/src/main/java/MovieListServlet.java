@@ -124,7 +124,7 @@ public class MovieListServlet extends HttpServlet {
                     "FROM movies m JOIN ratings r JOIN genres g JOIN genres_in_movies gim JOIN stars_in_movies sim JOIN stars s WHERE m.id = r.movieId AND sim.starId = s.id AND sim.movieID =m.id AND m.ID = gim.movieID AND gim.genreID = g.ID "
                     + title+year+director+star+genre+  "group by m.title order by " + sort+ " LIMIT ? OFFSET ?";
             PreparedStatement statement = conn.prepareStatement(queryTitle);
-            System.out.print(queryTitle);
+            System.out.println(queryTitle);
             statement.setInt(1, limit);
             statement.setInt(2, offset);
 

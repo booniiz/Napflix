@@ -69,6 +69,16 @@ $$
 DELIMITER ;
 
 
+CREATE INDEX starName ON stars(name);
+CREATE INDEX genreName ON genres(name);
 
 
-
+DELIMITER ##
+CREATE TRIGGER AfterINSERTTrigger
+    AFTER INSERT
+    ON movies FOR EACH ROW
+BEGIN
+    INSERT INTO ratings
+        VALUE (new.ID,0,0);
+end ##
+DELIMITER ;
