@@ -20,6 +20,6 @@ public class GetCart extends HttpServlet {
 //            session.setAttribute("cart", cart);
 //        }
         resp.getWriter().write(gson.toJson(cart));
-
+// 5 minutes +
     }
 }

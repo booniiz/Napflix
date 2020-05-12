@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Movie {
     private String id;
@@ -21,6 +22,14 @@ public class Movie {
         this.rating = rating;
         this.starIDMap = starIDMap;
         Genres = genres;
+    }
+
+    public Movie(String id, String title, int year, String director, List<String> genres){
+        this.id = id;
+        this.title = title;
+        this.year = year;
+        this.director = director;
+        this.Genres = genres;
     }
 
     public Map<String, String> getStarIDMap() {
@@ -80,5 +89,38 @@ public class Movie {
         Genres = genres;
     }
 
+    //Sources: autocomplete/implemen by intellJ
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", year=" + year +
+                ", director='" + director + '\'' +
+                ", rating=" + rating +
+                ", starIDMap=" + starIDMap +
+                ", Genres=" + Genres +
+                '}';
+    }
 
+    // Sources: autocomplete/implemen by intellJ
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return year == movie.year &&
+                Float.compare(movie.rating, rating) == 0 &&
+                Objects.equals(id, movie.id) &&
+                Objects.equals(title, movie.title) &&
+                Objects.equals(director, movie.director) &&
+                Objects.equals(starIDMap, movie.starIDMap) &&
+                Objects.equals(Genres, movie.Genres);
+    }
+
+    // Sources: autocomplete/implement by intellJ
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, year, director, rating, starIDMap, Genres);
+    }
 }
