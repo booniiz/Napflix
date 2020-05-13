@@ -1,8 +1,8 @@
 # cs122b-spring20-team-128
 cs122b-spring20-team-128 created by GitHub Classroom
 
-1.(Demo video on Google Drive -- accessible with an UCI.edu address)
-https://drive.google.com/open?id=1oiUuJZe5LN4jsMmVMQhGsbnuwA91BXAT
+1.Youtube(Unlisted)
+https://youtu.be/-HK53GfBR2U
 
 2.How to run this on Tomcat?
 
