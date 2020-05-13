@@ -144,13 +144,15 @@ public class MovieParser {
             databaseAuthentication da = new databaseAuthentication();
             Connection conn = DriverManager.getConnection(da.getAddress(),da.getUsername(), da.getPassowrd());
             // User can't not access this.
+            Statement statement = conn.createStatement();
             for (String s: new ArrayList<>(this.genres)){
                 String sqlStatement = "INSERT INTO genres(name) SELECT \"" + s
                         + "\" WHERE \"" + s + "\" NOT IN (SELECT name FROM genres)";
-                Statement statement = conn.createStatement();
-                statement.executeUpdate(sqlStatement);
-                statement.close();
+                statement.addBatch(sqlStatement);
             }
+            statement.addBatch("CREATE INDEX genreName ON genres(name)");
+            statement.executeBatch();
+            statement.close();
             for (Movie m: new ArrayList<>(this.movies)){
                 if (m.getTitle() == "The Matrix"){
                     System.out.println("he");
@@ -165,25 +167,25 @@ public class MovieParser {
                     System.out.println(m.getTitle() + "'s director is null");
                 }else{
                     String temp ="INSERT INTO movies SELECT \""+ m.getId() +"\",\""+ m.getTitle() +"\",\""+ m.getYear() +"\",\""+ m.getDirector() +"\" WHERE \"" + m.getId() + "\" NOT IN (SELECT ID FROM movies)";
-                    Statement statement = conn.createStatement();
-                    statement.executeUpdate(temp);
-                    statement.close();
-                    String temp2 = "INSERT INTO ratings VALUES(?,?,?)";
-                    PreparedStatement temp1 = conn.prepareStatement(temp2);
+                    Statement statement2 = conn.createStatement();
+                    statement2.executeUpdate(temp);
+                    statement2.close();
+                    PreparedStatement temp1 = conn.prepareStatement("INSERT INTO ratings VALUES(?,?,?)");
                     temp1.setString(1,m.getId());
                     temp1.setInt(2,0);
                     temp1.setInt(3,0);
                     temp1.executeUpdate();
                     temp1.close();
+                    PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO genres_in_movies VALUES(?,?)");
                     for (String g:m.getGenres()){
                         int genreID = getGenresID(g);
-                        String temp3 = "INSERT INTO genres_in_movies VALUES(?,?)";
-                        PreparedStatement preparedStatement = conn.prepareStatement(temp3);
                         preparedStatement.setInt(1, genreID);
                         preparedStatement.setString(2, m.getId());
-                        preparedStatement.executeUpdate();
-                        preparedStatement.close();
+                        preparedStatement.addBatch();
                     }
+                    preparedStatement.addBatch("CREATE INDEX genreName ON genres(name)");
+                    preparedStatement.executeBatch();
+                    preparedStatement.close();
                 }
             }
 

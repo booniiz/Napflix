@@ -34,26 +34,23 @@ public class CastParser {
             Cast c = new Cast(id, stageName, dob);
             casts.add(c);
         }
-        for (Cast c: new ArrayList<>(this.casts)){
-            try{
-                Class.forName("com.mysql.jdbc.Driver").newInstance();
-                databaseAuthentication da = new databaseAuthentication();
-                Connection conn = DriverManager.getConnection(da.getAddress(),da.getUsername(), da.getPassowrd());
-                try{
-                    Statement statement = conn.createStatement();
-                    String s ="INSERT INTO stars SELECT\""+c.getId()+"\",\""+c.getName()+"\",\""+Integer.toString(c.getBirthYear())+"\" WHERE \"" +c.getName()+ "\" NOT IN (SELECT name FROM stars)";
-                    statement.executeUpdate(s);
-                    statement.close();
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                conn.close();
-            }catch (Exception e){
-                e.printStackTrace();
+        try{
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            databaseAuthentication da = new databaseAuthentication();
+            Connection conn = DriverManager.getConnection(da.getAddress(),da.getUsername(), da.getPassowrd());
+            PreparedStatement statement = conn.prepareStatement("");
+            for (Cast c: new ArrayList<>(this.casts)) {
+                String s = "INSERT INTO stars SELECT\"" + c.getId() + "\",\"" + c.getName() + "\",\"" + Integer.toString(c.getBirthYear()) + "\" WHERE \"" + c.getName() + "\" NOT IN (SELECT name FROM stars)";
+                statement.addBatch(s);
             }
+            statement.addBatch("CREATE INDEX starName ON stars(name)");
+            statement.executeBatch();
+            statement.close();
+        }catch (Exception e){}
 
-        }
+
     }
+
 
     public boolean canStringBeInt(String s){
         try{

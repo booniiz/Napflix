@@ -15,6 +15,7 @@ public class MovieCastParser {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             databaseAuthentication da = new databaseAuthentication();
             Connection conn = DriverManager.getConnection(da.getAddress(),da.getUsername(), da.getPassowrd());
+            PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO stars_in_movies VALUES (?,?)");
             for(int i = 0; i < nodeList.getLength();i++){
                 Element elem = (Element) nodeList.item(i);
                 String actorName = null;
@@ -32,18 +33,12 @@ public class MovieCastParser {
                     continue;
                 }
                 String actorID = getActorID(actorName);
-                String temp = "INSERT INTO stars_in_movies VALUES (?,?)";
-                PreparedStatement preparedStatement = conn.prepareStatement(temp);
                 preparedStatement.setString(1,actorID);
                 preparedStatement.setString(2,movieID);
-                try{
-                    preparedStatement.executeUpdate();
-                }catch (MySQLIntegrityConstraintViolationException e){
-
-                }catch (MySQLSyntaxErrorException e){
-
-                }
+                preparedStatement.addBatch();
             }
+            preparedStatement.executeBatch();
+            preparedStatement.close();
         }catch (Exception e){
             e.printStackTrace();
         }

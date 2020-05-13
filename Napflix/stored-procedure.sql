@@ -69,9 +69,6 @@ $$
 DELIMITER ;
 
 
-CREATE INDEX starName ON stars(name);
-CREATE INDEX genreName ON genres(name);
-
 
 DELIMITER ##
 CREATE TRIGGER AfterINSERTTrigger
