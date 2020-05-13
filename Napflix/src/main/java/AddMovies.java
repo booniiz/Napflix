@@ -104,7 +104,15 @@ public class AddMovies extends HttpServlet {
                 return;
             }
             else{
-                movieID = movieID + "1";
+                try{
+                    movieID = "tt"+(Integer.parseInt(movieID.substring(2))+1);
+                }catch (Exception e){
+                    try{
+                        movieID = movieID.substring(0,3)+(Integer.parseInt(movieID.substring(3))+1);
+                    }catch (Exception ex){
+                        movieID = movieID + "1";
+                    }
+                }
                 report = "Success: Inserted movieID = " + movieID;
             }
             //-------MOVIE--------------------------------------------------------------------------------------
