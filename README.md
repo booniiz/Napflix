@@ -2,7 +2,7 @@
 cs122b-spring20-team-128 created by GitHub Classroom
 
 1.(Demo video on Google Drive -- accessible with an UCI.edu address)
-//NEED TO UPDATE
+https://drive.google.com/open?id=1oiUuJZe5LN4jsMmVMQhGsbnuwA91BXAT
 
 2.How to run this on Tomcat?
 
