@@ -18,6 +18,7 @@ public class MovieListServlet extends HttpServlet {
         int offset=(page-1)*(limit-1);
         int rowcount=0;
         String sort = req.getParameter("sort");
+
         //CHECK FOR CASES
         if(req.getParameter("titleID") == null || req.getParameter("titleID") == "" ){
             title ="";
@@ -28,7 +29,12 @@ public class MovieListServlet extends HttpServlet {
              titlep =req.getParameter("titleID");
         }
         else if( req.getParameter("titleID").length() > 1 ){
-            title = " AND m.title like '%" + req.getParameter("titleID") + "%' ";
+            String[] tokens = req.getParameter("titleID").split(" ");
+            String token = "";
+            for (String t : tokens) {
+                token = token + "+"+t+"*% ";
+            }
+            title = " AND MATCH (m.title) AGAINST ('" + token + "' IN BOOLEAN MODE) ";
             titlep =req.getParameter("titleID");
         }
         else{

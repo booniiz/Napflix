@@ -25,17 +25,25 @@
 
 <body>
 <h1></h1>
+<p>&nbsp;</p>
 <form id="searchform" onsubmit="getSearch()">
     <div style="text-align:center" class="form-group">
-        <input type="text" name="titleID" placeholder = "Title">
-        <input type="text" name="yearID" placeholder ="Year">
-        <input type="text" name="directorID" placeholder ="Director">
-        <input type="text" name="starID" placeholder = "Star">
+        <input type="text" name="titleID" id="autocomplete"
+               class="autocomplete-searchbox"
+               style="width: 600px; height:30px; "
+               placeholder="Search Titles">
+        <input type="submit" value="Search"/>
+    </div>
+
+    <div style="text-align:center" class="form-group">
+        <input type="text" name="yearID" style="visibility: hidden" placeholder ="Year">
+        <input type="text" name="directorID" style="visibility: hidden" placeholder ="Director">
+        <input type="text" name="starID" style="visibility: hidden" placeholder = "Star">
         <input type="hidden" name="sort" value = "m.title ASC,r.rating DESC">
         <input type="hidden" name="page" value = "1">
         <input type="hidden" name="limit" value = "10">
-        <input type="submit" value="Search">
     </div>
+
 </form>
 
 <h1></h1>
