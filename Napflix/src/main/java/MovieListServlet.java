@@ -29,10 +29,16 @@ public class MovieListServlet extends HttpServlet {
              titlep =req.getParameter("titleID");
         }
         else if( req.getParameter("titleID").length() > 1 ){
+            //FULL TEXT SEARCH
             String[] tokens = req.getParameter("titleID").split(" ");
             String token = "";
             for (String t : tokens) {
-                token = token + "+"+t+"*% ";
+                if(t.length() > 3) {
+                    token = token + "+" + t + "*% ";
+                }
+                else{
+                    token = token + t + "*% ";
+                }
             }
             title = " AND MATCH (m.title) AGAINST ('" + token + "' IN BOOLEAN MODE) ";
             titlep =req.getParameter("titleID");
