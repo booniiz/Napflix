@@ -16,6 +16,7 @@ public class LoginFilter implements Filter {
         allowedURI.add("/Napflix/login.html".toLowerCase());
         allowedURI.add("/Napflix/login.js".toLowerCase());
         allowedURI.add("/Napflix/ajax/login".toLowerCase());
+        allowedURI.add("/Napflix/ajax/Androidlogin".toLowerCase());
     }
 
     @Override
