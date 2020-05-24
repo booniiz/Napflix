@@ -10,7 +10,6 @@ function handleLookup(query, doneCallback) {
     console.log("autocomplete initiated")
 
     var cache = sessionStorage.getItem(query);
-    console.log(cache);
     if(cache === null){
         // sending the HTTP GET request to the Java Servlet endpoint hero-suggestion
         // with the query data

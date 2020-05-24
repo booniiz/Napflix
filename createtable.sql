@@ -10,9 +10,10 @@ USE Napflix;
 
 CREATE TABLE IF NOT EXISTS movies(
                                      ID VARCHAR(10) PRIMARY KEY NOT NULL DEFAULT '',
-                                     title VARCHAR(100) NOT NULL DEFAULT '',
+                                     title TEXT,
                                      year INTEGER NOT NULL,
-                                     director VARCHAR(100) NOT NULL DEFAULT ''
+                                     director VARCHAR(100) NOT NULL DEFAULT '',
+									 FULLTEXT (title)
 );
 
 CREATE TABLE IF NOT EXISTS stars(
