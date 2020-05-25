@@ -29,7 +29,7 @@ public class AndroidUserAuth extends HttpServlet {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT *\n" +
                     "FROM customers\n" +
-                    "WHERE email = \""+ username +"\" and password = \""+ password +"\";");
+                    "WHERE email = \""+ username + "\"; ");
             if (resultSet.next() && new StrongPasswordEncryptor().checkPassword(password, resultSet.getString("password"))){
                 System.out.println("Sucuess");
                 HttpSession session = req.getSession();
