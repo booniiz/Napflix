@@ -72,7 +72,7 @@ function handleSelectSuggestion(suggestion) {
     console.log("you select " + suggestion["value"] + " with ID " + suggestion["data"]["movieID"])
 
         // pass the value of the input box to the handler function
-    window.location.replace('/Napflix/list?titleID='+suggestion["value"] +'&sort=m.title ASC,r.rating DESC&page=1&limit=10');
+    window.location.replace('/Napflix/api/movie?movieID='+suggestion["data"]["movieID"]+'&titleID='+suggestion["value"] +'&sort=m.title ASC,r.rating DESC&page=1&limit=10');
 
 }
 

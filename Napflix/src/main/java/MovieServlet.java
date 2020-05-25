@@ -61,11 +61,15 @@ public class MovieServlet extends HttpServlet {
                 "        ERROR!!! \n" +
                 "    </div>");
         try(Connection conn = DriverManager.getConnection(da.getAddress(), da.getUsername(), da.getPassowrd())){
+            String mode = "set GLOBAL sql_mode = ''";
+            PreparedStatement temp = conn.prepareStatement(mode);
+            temp.executeQuery();
+            temp.close();
             try (PreparedStatement statement = conn.prepareStatement(query)){
                 statement.setString(1, movieID);
                 try(ResultSet resultSet = statement.executeQuery()){
                     while (resultSet.next()) {
-                        String s = String.format("<a class = \"nav-link text-white\" href = \"/Napflix/list?titleID=%s&yearID=%s&directorID=%s&starID=%s&genreID=%s&sort=%s&page=%s&limit=%s\">BACK TO MOVIE LIST</a>"
+                        String backList = String.format("<a class = \"nav-link text-white\" href = \"/Napflix/list?titleID=%s&yearID=%s&directorID=%s&starID=%s&genreID=%s&sort=%s&page=%s&limit=%s\">BACK TO MOVIE LIST</a>"
                                 ,titlep,yearp,directorp,starp,genrep,sortp,pagep,limitp);
                         out.write("<nav class=\"navbar navbar-expand-lg navbar-light bg-primary\">\n" +
                                 "    <span class = \" navbar-brand text-white \">Movie</span>\n" +
@@ -74,7 +78,9 @@ public class MovieServlet extends HttpServlet {
                                 "            <a class = \"nav-link text-white\" href = \"/Napflix/checkout.html\">My carts(Checkout)</a>\n" +
                                 "        </li>\n" +
                                 "        <li class = \"navbar-item\">\n" +
-                                            s +
+                                            backList +
+                                "        <li class = \"navbar-item\">\n" +
+                                "           <a class = \"nav-link text-white\" href = \"/Napflix/mainmenu.html\">BACK TO MAIN MENU</a>" +
                                 "        </li>\n" +
                                 "    </ul>\n" +
                                 "</nav>");
