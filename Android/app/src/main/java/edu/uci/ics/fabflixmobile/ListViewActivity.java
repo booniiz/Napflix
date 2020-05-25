@@ -100,7 +100,7 @@ public class ListViewActivity extends Activity {
     }
     public void requestMovies(String title, int page){
         final RequestQueue queue = NetworkManager.sharedManager(ListViewActivity.this).queue;
-        final StringRequest movieListRequest = new StringRequest(Request.Method.GET, "http://ec2-18-234-101-122.compute-1.amazonaws.com:8443/Napflix/androidList?titleID="+ title +"&yearID&directorID&starID&sort=m.title%20ASC,r.rating%20DESC&page="+ String.valueOf(page) +"&limit=19", new Response.Listener<String>() {
+        final StringRequest movieListRequest = new StringRequest(Request.Method.GET, "https://ec2-18-234-101-122.compute-1.amazonaws.com:8443/Napflix/androidList?titleID="+ title +"&yearID&directorID&starID&sort=m.title%20ASC,r.rating%20DESC&page="+ String.valueOf(page) +"&limit=19", new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
                 Type movieArrayListType = new TypeToken<ArrayList<Movie>>() {

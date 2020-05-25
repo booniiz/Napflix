@@ -44,7 +44,7 @@ public class Login extends Activity {
          * In Android, localhost is the address of the device or the emulator.
          * To connect to your machine, you need to use the below IP address
          * **/
-        url = "http://ec2-18-234-101-122.compute-1.amazonaws.com:8443/Napflix/ajax/Androidlogin";
+        url = "https://ec2-18-234-101-122.compute-1.amazonaws.com:8443/Napflix/ajax/Androidlogin";
 
         //assign a listener to call a function to handle the user request when clicking a button
         loginButton.setOnClickListener(new View.OnClickListener() {
